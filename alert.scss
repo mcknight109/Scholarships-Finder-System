@@ -1,0 +1,36 @@
+/* Custom overall popup */
+.custom-swal-popup {
+height: 280px; /* simulate height since there's no direct height option */
+}
+
+/* Title customization */
+.custom-swal-title {
+font-size: 1rem;
+color: #69227e;
+}
+
+/* Text customization */
+.custom-swal-text {
+font-size: 13px;
+color: #444;
+}
+
+/* Icon size */
+.custom-swal-icon .swal2-icon {
+font-size: 28px;
+transform: scale(1.3);
+}
+
+/* Confirm button */
+.custom-swal-btn {
+font-size: 12px;
+padding: 6px 20px;
+background-color: #69227e !important;
+}
+
+/* Cancel button */
+.custom-swal-cancel {
+font-size: 12px;
+padding: 6px 20px;
+}
+
