@@ -37,10 +37,10 @@ if ($picRow = $picResult->fetch_assoc()) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="../AdminLTE/dist/css/adminlte.min.css">
-    <link rel="stylesheet" href="../AdminLTE/plugins/bootstrap/bootstrap.min.js">
-    <link rel="stylesheet" href="../AdminLTE/plugins/fontawesome-free/css/all.css">
-    <link rel="stylesheet" href="../sweetalert2/sweetalert2.min.css">
+    <link rel="stylesheet" href="../assets/AdminLTE/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="../assets/AdminLTE/plugins/bootstrap/bootstrap.min.js">
+    <link rel="stylesheet" href="../assets/AdminLTE/plugins/fontawesome-free/css/all.css">
+    <link rel="stylesheet" href="../assets/sweetalert2/sweetalert2.min.css">
     <link rel="stylesheet" href="css/style.scss">
     <link rel="stylesheet" href="../alert.scss">
 </head>
@@ -136,25 +136,25 @@ if ($picRow = $picResult->fetch_assoc()) {
                             </div>
                         </div>
                     </form>
-                    <div class="sideHeader">
+                    <div class="sideHeader" id="toggle-buttons">
                         <a href="#">
-                            <button>All</button>
+                            <button class="btn active">All</button>
                         </a>
                         <a href="#  ">
-                            <button>Pending</button>
+                            <button class="btn">Pending</button>
                         </a>
                         <a href="#">
-                            <button>Approved</button>
+                            <button class="btn">Approved</button>
                         </a>
                         <a href="#">
-                            <button>Rejected</button>
+                            <button class="btn">Rejected</button>
                         </a>
                     </div>
                 </div>
                 <div class="row">
                     <?php if ($result->num_rows > 0): ?>
                         <?php while ($row = $result->fetch_assoc()): ?>
-                            <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="col-md-6 col-lg-4 mb-3">
                                 <div class="card application-card shadow-sm">
                                     <div class="card-body">
                                         <h5 class="card-title text-primary">
@@ -177,11 +177,6 @@ if ($picRow = $picResult->fetch_assoc()) {
                                         <a href="controls/view-application.php?id=<?php echo $row['id']; ?>" class="btn btn-primary btn-sm mt-2 me-2">
                                             <i class="fas fa-eye me-1"></i> View
                                         </a>
-                                        <!-- Delete Button with Alert -->
-                                        <button class="btn btn-danger btn-sm mt-2 delete-btn"
-                                            data-id="<?php echo $row['id']; ?>">
-                                            <i class="fas fa-trash-alt me-1"></i> Delete
-                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -199,9 +194,9 @@ if ($picRow = $picResult->fetch_assoc()) {
     <!-- SweetAlert2 JS -->
     <script src="../sweetalert2/sweetalert2.all.min.js"></script>
     <!-- AdminLTE Scripts -->
-    <script src="../AdminLTE/plugins/jquery/jquery.min.js"></script>
-    <script src="../AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../AdminLTE/dist/js/adminlte.min.js"></script>
+    <script src="../assets/AdminLTE/plugins/jquery/jquery.min.js"></script>
+    <script src="../assets/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/AdminLTE/dist/js/adminlte.min.js"></script>
 
     <script>
         $(document).ready(function () {
@@ -240,7 +235,16 @@ if ($picRow = $picResult->fetch_assoc()) {
                 $(this).parent().toggle($(this).text().toLowerCase().indexOf(value) > -1);
             });
         });
+    </script>
 
+    <script>
+        document.getElementById('toggle-buttons').addEventListener('click', function(e){
+            if (e.target.classList.contains('btn')){
+                const buttons = document.querySelectorAll('#toggle-buttons, .btn');
+                buttons.forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+            }
+        });
     </script>
 </body>
 </html>

@@ -18,8 +18,24 @@ $user = $user_result->fetch_assoc();
 $profilePic = !empty($user['picture']) ? $user['picture'] : 'default.png';
 
 // Fetch scholarships
-$query = "SELECT * FROM scholarships ORDER BY deadline DESC";
+$search = $_GET['search'] ?? '';
+$filter = $_GET['filter'] ?? '';
+
+$query = "SELECT * FROM scholarships WHERE 1";
+
+if (!empty($search)) {
+  $search = $conn->real_escape_string($search);
+  $query .= " AND title LIKE '%$search%'";
+}
+
+if (!empty($filter) && in_array($filter, ['open', 'closed'])) {
+  $filter = $conn->real_escape_string($filter);
+  $query .= " AND status = '$filter'";
+}
+
+$query .= " ORDER BY deadline DESC";
 $result = $conn->query($query);
+
 ?>
 
 
@@ -29,10 +45,10 @@ $result = $conn->query($query);
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Student Dashboard</title>
-  <link rel="stylesheet" href="../AdminLTE/dist/css/adminlte.min.css" />
-  <link rel="stylesheet" href="../AdminLTE/plugins/bootstrap/bootstrap.min.js" />
-  <link rel="stylesheet" href="../AdminLTE/plugins/fontawesome-free/css/all.css" />
-  <link rel="stylesheet" href="../sweetalert2/sweetalert2.min.css">
+  <link rel="stylesheet" href="../assets/AdminLTE/dist/css/adminlte.min.css" />
+  <link rel="stylesheet" href="../assets/AdminLTE/plugins/bootstrap/bootstrap.min.js" />
+  <link rel="stylesheet" href="../assets/AdminLTE/plugins/fontawesome-free/css/all.css" />
+  <link rel="stylesheet" href="../assets/sweetalert2/sweetalert2.min.css">
   <link rel="stylesheet" href="css/style.scss">
   <link rel="stylesheet" href="../alert.scss">
 </head>
@@ -128,20 +144,34 @@ $result = $conn->query($query);
     <div class="content-wrapper d-flex flex-wrap">
       <div class="content">
         <div class="searchCon">
-          <form class="form-inline">
-            <div class="input-group input-group-sm">
-              <input id="searchApplicant" class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-                <div class="input-group-append">
-                    <button class="btn btn-navbar border " type="submit">
-                      <i class="fas fa-search"></i>
-                    </button>
-                </div>
+        <form class="form-inline" method="GET" action="home-page.php">
+          <div class="input-group input-group-sm">
+            <input id="searchApplicant" name="search" class="form-control form-control-navbar" type="search" placeholder="Search by title..." aria-label="Search" value="<?php echo htmlspecialchars($search); ?>">
+            <div class="input-group-append">
+              <button class="btn btn-navbar border" type="submit">
+                <i class="fas fa-search"></i>
+              </button>
             </div>
-          </form>
+          </div>
+        </form>
+          <div class="select" id="toggle-buttons">
+            <form method="GET" action="home-page.php" style="display:inline;">
+              <input type="hidden" name="filter" value="">
+              <button type="submit" class="btn <?php echo empty($_GET['filter']) ? 'active' : ''; ?>">All</button>
+            </form>
+            <form method="GET" action="home-page.php" style="display:inline;">
+              <input type="hidden" name="filter" value="open">
+              <button type="submit" class="btn <?php echo (isset($_GET['filter']) && $_GET['filter'] === 'open') ? 'active' : ''; ?>">Open</button>
+            </form>
+            <form method="GET" action="home-page.php" style="display:inline;">
+              <input type="hidden" name="filter" value="closed">
+              <button type="submit" class="btn <?php echo (isset($_GET['filter']) && $_GET['filter'] === 'closed') ? 'active' : ''; ?>">Closed</button>
+            </form>
+          </div>
         </div>
         <?php if ($result->num_rows > 0): ?>
           <?php while ($row = $result->fetch_assoc()): ?>
-            <div class="div-wrapper">
+            <div id="scholarship-list" class="div-wrapper">
             <div class="picture">
               <?php if (!empty($row['images'])): ?>
                 <a href="view-image.php?img=<?php echo urlencode($row['images']); ?>">
@@ -202,11 +232,11 @@ $result = $conn->query($query);
   </div>
 
   <!-- SweetAlert2 JS -->
-  <script src="../sweetalert2/sweetalert2.all.min.js"></script>
+  <script src="../assets/sweetalert2/sweetalert2.all.min.js"></script>
   <!-- AdminLTE Scripts -->
-  <script src="../AdminLTE/plugins/jquery/jquery.min.js"></script>
-  <script src="../AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="../AdminLTE/dist/js/adminlte.min.js"></script>
+  <script src="../assets/AdminLTE/plugins/jquery/jquery.min.js"></script>
+  <script src="../assets/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/AdminLTE/dist/js/adminlte.min.js"></script>
 
   <script>
     function confirmApply(scholarId) {
@@ -234,5 +264,15 @@ $result = $conn->query($query);
       });
     }
   </script>
+
+    <script>
+      document.getElementById("toggle-buttons").addEventListener('click', function(e){
+          if (e.target.classList.contains('btn')){
+              const buttons = document.querySelectorAll('#toggle-buttons, .btn');
+              buttons.forEach(btn => btn.classList.remove('active'))
+              e.target.classList.add('active');
+          }
+      });
+    </script>
 </body>
 </html>

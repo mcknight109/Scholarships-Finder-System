@@ -13,12 +13,11 @@
         
         header{
             padding: 0rem 1.875rem;
-            height: 3.438rem;
+            height: 3.125rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
             border: none;
-            background-color: #5c1d6f;
             // border-bottom: 1px solid #5c1d6f;
             box-shadow: 0px 5px 20px 0px rgba(0,0,0,0.1);
     
@@ -26,6 +25,7 @@
             .logo{
                 height: 2.5rem;
                 width: 7.5rem;
+                background-color: #5c1d6f;
     
                 img{
                     object-fit: fill;
@@ -104,7 +104,7 @@
 
         
         .main-header{
-            height: 3.438rem;       
+            height: 3.125rem;       
             border: none;
             display: flex;
             align-items: center;
@@ -195,7 +195,7 @@
 
 
         .main-sidebar{
-            background-color: #441752;
+            background-color: #5c1d6f;
     
             .nav-logo{
                 height: 4rem;
@@ -265,12 +265,27 @@
                     font-weight: 600;
                 }
     
+
                 .breadcrumb{
                     font-size: 14px;
     
                     li{
                         margin: 0rem 0.5rem 1rem 0rem;
                     }
+                }
+            }
+
+
+            .container{
+
+                
+                .card-body{
+
+                    .btn{
+                        border-radius: 35px;
+                        width: 100%;
+                    }
+                
                 }
             }
 
@@ -301,36 +316,76 @@
                     border-radius: 10px;
                 }
 
+
                 .searchCon{        
-                    min-height: 70px;    
+                    min-height: 120px;    
                     width: 85%;
+                    padding: 12px 15px;
                     display: flex;
                     align-items: center;
-                    justify-content: center;
+                    flex-direction: column;
                     background-color: #ffffff;
                     border-radius: 10px;
                     margin-bottom: 15px;
-                    
-                    input, button{
-                        height: 38px;
-                    }
-    
-                    input{
-                        width: 580px;
-                        border-radius: 10px;
+                    box-shadow: 0px 2px 2px 1px rgba(0,0,0,0.1);
 
-                    }
-    
-                    .input-group{
+                    .input-group{   
+                        border-bottom: 1px solid #88888877;
+                        padding-bottom: 12px;
 
+                        input, button{
+                            height: 38px;
+                        }
+    
+                        input{
+                            width: 630px;
+                            border-top-left-radius: 10px;
+                            border-bottom-left-radius: 10px;
+    
+                        }
+    
                         button{
-
                             width: 40px;
                             border-top-right-radius: 10px;
                             border-bottom-right-radius: 10px;
                         }
                     }
+
+
+                    .select{
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 10px;
+                        margin-top: 10px;
+                    
+                        .btn{
+                            border-radius: 20px;
+                            width: 100%;
+                            padding: 8px 18px;
+                            border: 0;
+                            font-size: 12px;
+                            color: #69227e;
+                            border: 1px solid #5c1d6f;
+                            background-color: transparent;
+                            transition: box-shadow 0.3s ease;
+        
+                            &:hover{
+                                box-shadow: 0px 3px 5px 1px rgba(0,0,0,0.5);
+        
+                            }
+
+                        }
+
+                        .btn.active{
+                            background-color: #5c1d6f;
+                            color: #ffffff;
+                        }
+                    }
                 }
+
+
+
 
                 .div-wrapper{
                     width: 85%; 
@@ -471,18 +526,21 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-            
-                    input, button{
-                        height: 35px;
-                        margin-bottom: 0.65rem;
-                        
-                    }
-    
-                    input{
-                        border-radius: 10px;
-                    }
     
                     .input-group{
+
+                        input, button{
+                            height: 35px;
+                            margin-bottom: 0.65rem;
+                            
+                        }
+        
+                        input{
+                            border-radius: 10px;
+                            border-top-left-radius: 10px;
+                            border-bottom-left-radius: 10px;
+                        }
+
                         button{
                             width: 40px;
                             border-top-right-radius: 10px;
@@ -490,12 +548,14 @@
                         }
                     }
                 
+
+
                 .sideHeader{
                     width: auto;
                     display: flex;
                     gap: 5px;
     
-                    button{
+                    .btn{
                         border-radius: 20px;
                         height: 35px;
                         width: 100%;
@@ -510,6 +570,11 @@
                             box-shadow: 0px 3px 5px 1px rgba(0,0,0,0.5);
     
                         }
+                    }
+
+                    .btn.active{
+                        background-color: #5c1d6f;
+                        color: #ffffff;
                     }
                 }
             }
@@ -706,8 +771,18 @@
         .searchCon{
             width: 95% !important;
 
-            input{ 
-                width: 250px !important;
+            .input-group{
+
+                input{ 
+                    width: 285px !important;
+                }
+            }
+
+            .select{
+
+                button{
+                    padding: 8px 14px !important;
+                }
             }
         }
 

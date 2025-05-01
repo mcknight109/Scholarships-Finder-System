@@ -203,7 +203,7 @@ function timeAgo($datetime) {
                     <!-- Online -->
                     <div class="col-md-4 col-sm-6 col-12">
                         <div class="info-box shadow">
-                            <span class="info-box-icon bg-warning"><i class="fas fa-wifi"></i></span>
+                            <span class="info-box-icon bg-warning"><i class="fas fa-hourglass-half"></i></span>
                             <div class="info-box-content">
                                 <span class="info-box-text">Pending Applications</span>
                                 <span class="info-box-number"><?= $pendingApplications ?></span>
