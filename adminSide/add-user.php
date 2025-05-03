@@ -1,5 +1,5 @@
 <?php
-include '../../config.php';
+include '../config.php';
 
 $message = ""; // Default message
 
@@ -43,25 +43,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Add User</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="../AdminLTE/dist/css/adminlte.min.css">
-    <link rel="stylesheet" href="../AdminLTE/plugins/bootstrap/bootstrap.min.js">
-    <link rel="stylesheet" href="../AdminLTE/plugins/fontawesome-free/css/all.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/style.scss">
+    <link rel="stylesheet" href="../AdminLTE/plugins/fontawesome-free/css/all.css">
+    <link rel="stylesheet" href="../AdminLTE/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="css/style.scss">
+    <link rel="stylesheet" href="css/temp.scss">
+    <link rel="stylesheet" href="css/temp2.scss">
+    <title>Add User</title>
 </head>
 <body>
     <header>
         <div class="logo">
-        <img src="../../images/msphLogo.png" alt="Logo Picture">
+            <img src="../images/realogo.png" alt="Logo Picture">
+        </div>
+        <div class="nav-side">
+            <div class="noti">
+                <a class="nav-link" data-toggle="dropdown" href="#">
+                    <i class="far fa-bell"></i>
+                </a>
+            </div>
+
+            <div class="prof-img">
+                <a href="stud-profile.php">
+                    <img src="../uploads/scholar3.jpg" alt="profile image">
+                </a>
+            </div>
+
+            <div class="logout-btn">
+                <a href="../logout.php">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
         </div>
     </header>
 
-    <div class="container my-5">
+    <div class="container my-3">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Add new User</h2>
-            <a href="../manage-users.php" class="btn btn-secondary">Back to List</a>
+            <h2>Create Account</h2>
+            <a href="manage-users.php" class="btn btn-secondary">Back to List</a>
         </div>
            <div class="card shadow">
                 <div class="card-body">
@@ -117,8 +137,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     <!-- Bootstrap CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- AdminLTE Scripts -->
-    <script src="../AdminLTE/plugins/jquery/jquery.min.js"></script>
-    <script src="../AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../AdminLTE/dist/js/adminlte.min.js"></script>
+    <!-- Bootstrap 5 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- SweetAlert2 JS -->
+    <script src="../assets/sweetalert2/sweetalert2.all.min.js"></script>
+    <!-- AdminLTE Scripts -->    
+    <script src="../assets/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>    
+    <script src="../assets/AdminLTE/plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="../assets/AdminLTE/plugins/jquery/jquery.min.js"></script>    
+    <script src="../assets/AdminLTE/dist/js/adminlte.min.js"></script>
 </html>
+</body>

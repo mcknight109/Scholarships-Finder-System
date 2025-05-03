@@ -1,8 +1,17 @@
 <?php
 include '../config.php';
 
-$query = "SELECT * FROM scholarships ORDER BY deadline DESC";
-$result = $conn->query($query);
+include '../config.php';
+
+$statusFilter = isset($_GET['status']) ? $_GET['status'] : 'all';
+
+if ($statusFilter === 'open' || $statusFilter === 'closed') {
+  $query = "SELECT * FROM scholarships WHERE status = '$statusFilter' ORDER BY deadline DESC";
+} else {
+  $query = "SELECT * FROM scholarships ORDER BY deadline DESC";
+}
+
+$result = mysqli_query($conn, $query);
 ?>
 
 <!DOCTYPE html>
@@ -10,20 +19,19 @@ $result = $conn->query($query);
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Dashboard</title>
-  <link rel="stylesheet" href="../AdminLTE/dist/css/adminlte.min.css" />
-  <link rel="stylesheet" href="../AdminLTE/plugins/bootstrap/bootstrap.min.js" />
-  <link rel="stylesheet" href="../AdminLTE/plugins/fontawesome-free/css/all.css" />
-  <link rel="stylesheet" href="../sweetalert2/sweetalert2.min.css">
+  <link rel="stylesheet" href="../assets/AdminLTE/plugins/fontawesome-free/css/all.css">
+  <link rel="stylesheet" href="../assets/AdminLTE/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="../assets/sweetalert2/sweetalert2.min.css">
   <link rel="stylesheet" href="css/style.scss">
-  <link rel="stylesheet" href="css/temp.scss">
   <link rel="stylesheet" href="../alert.scss">
+  <title>Admin Dashboard</title>
 </head>
 <body>
   <div class="wrapper">
     <!-- Sidebar -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <div class="nav-logo" href="admin-dashboard.php">
+        <i class="fas fa-user-shield mr-1 text-white"></i>
         <span>WELCOME ADMIN</span>
       </div>
 
@@ -120,18 +128,21 @@ $result = $conn->query($query);
                 </div>
             </div>
           </form>
-          <div class="sideHeader">
-            <a href="controls/create-scholar.php">
-              <button>All</button>
+          <?php
+            $currentStatus = isset($_GET['status']) ? $_GET['status'] : 'all';
+          ?>
+          <div class="sideHeader" id="toggle-buttons">
+            <a href="scholarships.php?status=all">
+              <button class="btn <?= $currentStatus === 'all' ? 'active' : '' ?>">All</button>
             </a>
-            <a href="controls/create-scholar.php">
-              <button>Open</button>
+            <a href="scholarships.php?status=open">
+              <button class="btn <?= $currentStatus === 'open' ? 'active' : '' ?>">Open</button>
             </a>
-            <a href="controls/create-scholar.php">
-              <button>Closed</button>
+            <a href="scholarships.php?status=closed">
+              <button class="btn <?= $currentStatus === 'closed' ? 'active' : '' ?>">Closed</button>
             </a>
-            <a href="controls/create-scholar.php">
-              <button>Create Scholarship</button>
+            <a href="create-scholar.php">
+              <button class="btn">Create Scholarship</button>
             </a>
           </div>
         </div>
@@ -167,7 +178,7 @@ $result = $conn->query($query);
                         <p><strong>Status:</strong> <?php echo ucfirst($row['status']); ?></p>
                       </div>
                       <div>
-                        <a href="controls/edit-scholar.php?id=<?= $row['id'] ?>" class="btn btn-primary btn-sm">Edit</a>
+                        <a href="edit-scholar.php?id=<?= $row['id'] ?>" class="btn btn-primary btn-sm">Edit</a>
                         <button type="button" class="btn btn-outline-light btn-sm" onclick="deleteScholar(<?= $row['id'] ?>)">
                           <i class="fas fa-trash-alt"></i> Delete
                         </button>
@@ -231,12 +242,24 @@ $result = $conn->query($query);
       });
     }
   </script>
-
+  <!-- Bootstrap 5 -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <!-- SweetAlert2 JS -->
-  <script src="../sweetalert2/sweetalert2.all.min.js"></script>
-  <!-- AdminLTE Scripts -->
-  <script src="../AdminLTE/plugins/jquery/jquery.min.js"></script>
-  <script src="../AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="../AdminLTE/dist/js/adminlte.min.js"></script>
+  <script src="../assets/sweetalert2/sweetalert2.all.min.js"></script>
+  <!-- AdminLTE Scripts -->    
+  <script src="../assets/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>    
+  <script src="../assets/AdminLTE/plugins/bootstrap/bootstrap.min.js"></script>
+  <script src="../assets/AdminLTE/plugins/jquery/jquery.min.js"></script>    
+  <script src="../assets/AdminLTE/dist/js/adminlte.min.js"></script>
+
+  <script>
+    document.getElementById("toggle-buttons").addEventListener('click', function(e){
+        if (e.target.classList.contains('btn')){
+          const buttons = document.querySelectorAll('#toggle-buttons, .btn');
+          buttons.forEach(btn => btn.classList.remove('active'))
+          e.target.classList.add('active');
+        }
+    });
+  </script>
 </body>
 </html>

@@ -1,10 +1,10 @@
 body{
     margin: 0;
     box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
     header{
-        height: 3.438rem;
+        height: 3.125rem;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -15,9 +15,8 @@ body{
 
 
         .logo{
-            height: 2.5rem;
+            height: 1.75rem;
             width: 7.5rem;
-            background-color: #5c1d6f;
 
             img{
                 object-fit: fill;
@@ -96,7 +95,7 @@ body{
 
 
     .main-header{
-        height: 3.438rem;
+        height: 3.125rem;
         border: none;
         display: flex;
         align-items: center;
@@ -280,23 +279,29 @@ body{
                 align-items: center;
                 justify-content: space-between;
             
-                    input, button{
-                        height: 35px;
-                        margin-bottom: 0.65rem;
-                        
+                input, button{
+                    height: 35px;
+                    margin-bottom: 0.65rem;
+                    
+                }
+
+                input{
+                    border-radius: 10px;
+                }
+
+
+
+                .input-group{
+                    
+                    button{
+                        width: 40px;
+                        border-top-right-radius: 10px;
+                        border-bottom-right-radius: 10px;
                     }
-    
-                    input{
-                        border-radius: 10px;
-                    }
-    
-                    .input-group{
-                        button{
-                            width: 40px;
-                            border-top-right-radius: 10px;
-                            border-bottom-right-radius: 10px;
-                        }
-                    }
+                }
+
+
+
                 
                 .sideHeader{
                     width: auto;
@@ -319,8 +324,24 @@ body{
     
                         }
                     }
+                    
+                    .btn.active{
+                        background-color: #5c1d6f;
+                        color: #ffffff;
+                    }
+                }
+                
+
+                .row{
+
+                    .alert{
+                        border: 0;
+                        background-color: #5c1d6f;
+                    }
                 }
             }
+
+
 
 
 
@@ -355,6 +376,7 @@ body{
 
         .dash-con{
             display: flex;
+
         
             .con-1{
                 padding: 0rem 0.625rem ;
@@ -362,7 +384,7 @@ body{
                 width: 70%;
                 font-size: 13px;
         
-                .col-md-6{
+                .col-md-12{
                     flex: 0 0 100%;
                     padding: 0;
                     max-width: 100%;
@@ -370,14 +392,16 @@ body{
                     canvas{
                         height: 180px; 
                         width: 100%; 
-                        max-width: 300px; 
                         margin: auto;
                     }
-                }
-        
-                .card-header{
-                    background-color: #69227e;
-                
+    
+                    .card-header{
+                        background-color: #69227e;
+                    }
+
+                    .card{
+                        height: 418px;
+                    }
                 }
             }
         
@@ -389,6 +413,10 @@ body{
         
                 .card-header{
                     background-color: #69227e;
+                }
+
+                .card{
+                    height: 100%;
                 }
             }
         }        
@@ -558,3 +586,5 @@ body{
         }
     }
 }
+
+

@@ -7,7 +7,7 @@ $scholarshipId = $_GET['scholar_id'] ?? null;
 $message = '';
 
 // Fetch user details
-$userQuery = "SELECT name, gender FROM users WHERE id = ?";
+$userQuery = "SELECT name, gender, picture FROM users WHERE id = ?";
 $userStmt = $conn->prepare($userQuery);
 $userStmt->bind_param("i", $studentId);
 $userStmt->execute();
@@ -53,7 +53,7 @@ if (isset($_FILES['documents']) && is_array($_FILES['documents']['name']) && !em
         $stmt->bind_param("iisssssss", $studentId, $scholarshipId, $age, $contact, $address, $school, $grade_level, $reason, $document_json);
 
         if ($stmt->execute()) {
-            $message = "<div class='alert alert-success'>Application submitted successfully with documents!</div>";
+            $message = "success";
         } else {
             $message = "<div class='alert alert-danger'>Database error: " . $conn->error . "</div>";
         }
@@ -71,22 +71,23 @@ if (isset($_FILES['documents']) && is_array($_FILES['documents']['name']) && !em
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Apply Scholarship</title>
-  <link rel="stylesheet" href="../assets/AdminLTE/dist/css/adminlte.min.css" />
-  <link rel="stylesheet" href="../assets/AdminLTE/plugins/bootstrap/bootstrap.min.js" />
-  <link rel="stylesheet" href="../assets/AdminLTE/plugins/fontawesome-free/css/all.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="../assets/AdminLTE/plugins/fontawesome-free/css/all.css" />
+  <link rel="stylesheet" href="../assets/AdminLTE/dist/css/adminlte.min.css" />
   <link rel="stylesheet" href="css/style.scss">
+  <link rel="stylesheet" href="css/temp.scss">
+  <title>Apply for Scholarship</title>
 </head>
 <body>
+    <!-- Header remains unchanged -->
     <header>
         <div class="logo">
-            <img src="../images/msphLogo.png" alt="Logo Picture" class="img-fluid">
+            <img src="../images/realogo.png" alt="Logo Picture" class="img-fluid">
         </div>
         <div class="nav-side">
             <div class="prof-img">
                 <a href="profile.php">
-                    <img src="../uploads/<?php echo htmlspecialchars($profilePic); ?>" alt="profile image">
+                    <img src="../uploads/<?php echo htmlspecialchars($user['picture']); ?>" alt="profile image">
                 </a>
             </div>
             <div class="logout-btn">
@@ -97,25 +98,29 @@ if (isset($_FILES['documents']) && is_array($_FILES['documents']['name']) && !em
         </div>
     </header>
 
+    <!-- Begin redesigned applyWrapper section -->
     <div class="applyWrapper">
-        <div class="container my-5" style="max-width: 1240px">
-            <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="container">
+            <div class="page-header">
                 <h2>Apply for Scholarship: <?php echo htmlspecialchars($scholarship['title']); ?></h2>
-                <a href="home-page.php" class="btn btn-secondary">Go Back</a>
+                <a href="home-page.php" class="btn btn-back">
+                    <i class="fas fa-arrow-left"></i> Back to Scholarships
+                </a>
             </div>
+
+            <?php echo $message; ?>
 
             <form action="apply-scholar.php?scholar_id=<?php echo $scholarshipId; ?>" method="POST" enctype="multipart/form-data">
                 <div class="row">
                     <!-- Left Column: Application Form -->
-                    <div class="col-md-6">
-                        <div class="card shadow-sm mb-4">
+                    <div class="LeftForm col-lg-6">
+                        <div class="card form-card">
                             <div class="card-body">
-                                <h3 class="mb-3">Scholarship Application Form</h3>
-                                <p class="text-muted mb-4">Complete the form below to apply for the scholarship opportunity.</p>
-                                <?php echo $message; ?>
+                                <h3>Personal Information</h3>
+                                <p class="text-muted mb-4">Complete the form below to apply for this scholarship opportunity.</p>
 
                                 <div class="mb-3">
-                                    <label for="name" class="form-label">Name</label>
+                                    <label for="name" class="form-label">Full Name</label>
                                     <input type="text" class="form-control" id="name" name="name" value="<?php echo htmlspecialchars($user['name']); ?>" readonly>
                                 </div>
 
@@ -126,67 +131,114 @@ if (isset($_FILES['documents']) && is_array($_FILES['documents']['name']) && !em
 
                                 <div class="mb-3">
                                     <label for="age" class="form-label">Age</label>
-                                    <input type="text" class="form-control" id="age" name="age" required>
+                                    <input type="number" class="form-control" id="age" name="age" required min="1" max="100">
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="contact" class="form-label">Contact</label>
-                                    <input type="text" class="form-control" id="contact" name="contact" required>
+                                    <label for="contact" class="form-label">Contact Number</label>
+                                    <input type="tel" class="form-control" id="contact" name="contact" required placeholder="e.g., +63 912 345 6789">
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="address" class="form-label">Address</label>
-                                    <input type="text" class="form-control" id="address" name="address" required>
+                                    <label for="address" class="form-label">Complete Address</label>
+                                    <input type="text" class="form-control" id="address" name="address" required placeholder="Street, City, Province, Postal Code">
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="school" class="form-label">School</label>
-                                    <input type="text" class="form-control" id="school" name="school" required>
+                                    <label for="school" class="form-label">School/University Name</label>
+                                    <input type="text" class="form-control" id="school" name="school" required placeholder="Enter your School">
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="grade_level" class="form-label">Grade Level</label>
-                                    <input type="text" class="form-control" id="grade_level" name="grade_level" required>
+                                    <label for="grade_level" class="form-label">Grade/Year Level</label>
+                                    <input type="text" class="form-control" id="grade_level" name="grade_level" required placeholder="e.g., 3rd Year College, Grade 10">
                                 </div>
 
-                                <div class="mb-3">
-                                    <label for="reason" class="form-label">Reason for Applying</label>
-                                    <textarea class="form-control" id="reason" name="reason" rows="3" required></textarea>
+                                <div class="mb-4">
+                                    <label for="reason" class="form-label">Why are you applying for this scholarship?</label>
+                                    <textarea class="form-control" id="reason" name="reason" rows="4" required placeholder="Please explain your reasons and how this scholarship will help you achieve your goals..."></textarea>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Right Column: Submit Documents -->
-                    <div class="col-md-6">
-                        <div class="card shadow-sm mb-4">
+                    <div class="rightFrom col-lg-6">
+                        <div class="card form-card">
                             <div class="card-body">
-                                <h3 class="mb-3">Submit Documents</h3>
+                                <h3>Required Documents</h3>
+                                <p class="text-muted mb-4">Please upload all required documents in PDF or image format (JPG, PNG).</p>
+
                                 <div class="row g-3">
                                     <?php
-                                    $docs = ['Certificate of Enrollment (COE)', 'Academic Records (TOR)', 'Birth Certificate', 'Valid School ID'];
-                                    foreach ($docs as $key => $doc): ?>
-                                        <div class="col-md-6">
-                                            <div class="card p-3 shadow-sm">
-                                                <label class="form-label"><?php echo $doc; ?></label>
-                                                <input type="file" class="form-control" name="documents[]" required>
+                                    $docs = [
+                                        'Certificate of Enrollment (COE)' => 'Current enrollment proof from your school',
+                                        'Academic Records (TOR)' => 'Transcript of Records or recent Report Card',
+                                        'Birth Certificate' => 'PSA/NSO issued Birth Certificate',
+                                        'Valid School ID' => 'Front and back of your school ID'
+                                    ];
+                                    
+                                    $i = 1;
+                                    foreach ($docs as $doc => $description): ?>
+                                    <div class="col-md-6">
+                                        <div class="doc-card">
+                                            <div class="doc-title">
+                                                <i class="fas fa-file-alt me-2" style="color: #5c1d6f;"></i>
+                                                <?php echo $doc; ?>
                                             </div>
+                                            <p class="text-muted small"><?php echo $description; ?></p>
+                                            <input type="file" class="form-control" name="documents[]" id="doc<?php echo $i++; ?>" required>
                                         </div>
+                                    </div>
                                     <?php endforeach; ?>
                                 </div>
-                                <p class="text-muted mt-2">Please upload required documents in PDF or image format.</p>
+                                
+                                <div class="mt-4">
+                                    <div class="d-grid gap-2">
+                                        <button type="submit" class="btn btn-submit">
+                                            <i class="fas fa-paper-plane me-2"></i> Submit Application
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Unified submit button at the bottom -->
-                <div class="text-end">
-                    <button type="submit" class="btn btn-primary">Submit Application with Documents</button>
-                </div>
             </form>
         </div>
     </div>
+
+    <!-- Bootstrap 5 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- SweetAlert2 JS -->
+    <script src="../assets/sweetalert2/sweetalert2.all.min.js"></script>
+    <!-- AdminLTE Scripts -->    
+    <script src="../assets/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>    
+    <script src="../assets/AdminLTE/plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="../assets/AdminLTE/plugins/jquery/jquery.min.js"></script>    
+    <script src="../assets/AdminLTE/dist/js/adminlte.min.js"></script>
+
+    <?php if ($message === 'success'): ?>
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Application Submitted!',
+                text: 'Your scholarship application has been successfully submitted.',
+                confirmButtonColor: '#5c1d6f',
+                width: 330,
+                customClass: {
+                popup: 'custom-swal-popup',
+                title: 'custom-swal-title',
+                htmlContainer: 'custom-swal-text',
+                icon: 'custom-swal-icon',
+                confirmButton: 'custom-swal-btn',
+                cancelButton: 'custom-swal-cancel'
+                }
+            }).then(() => {
+                window.location.href = 'home-page.php';
+            });
+        </script>
+    <?php endif; ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>

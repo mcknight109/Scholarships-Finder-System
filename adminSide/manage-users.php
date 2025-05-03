@@ -4,12 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="../AdminLTE/dist/css/adminlte.min.css">
-    <link rel="stylesheet" href="../AdminLTE/plugins/bootstrap/bootstrap.min.js">
-    <link rel="stylesheet" href="../AdminLTE/plugins/fontawesome-free/css/all.css">
-    <link rel="stylesheet" href="../AdminLTE/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" href="../AdminLTE/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-    <link rel="stylesheet" href="../sweetalert2/sweetalert2.min.css">
+    <link rel="stylesheet" href="../assets/AdminLTE/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="../assets/AdminLTE/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="../assets/AdminLTE/plugins/fontawesome-free/css/all.css">
+    <link rel="stylesheet" href="../assets/AdminLTE/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="../assets/sweetalert2/sweetalert2.min.css">
     <link rel="stylesheet" href="css/style.scss">
     <link rel="stylesheet" href="../alert.scss">
 </head>
@@ -18,6 +17,7 @@
         <!-- Sidebar -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <div class="nav-logo" href="admin-dashboard.php">
+                <i class="fas fa-user-shield mr-1 text-white"></i>
                 <span>WELCOME ADMIN</span>
             </div>
             
@@ -116,13 +116,10 @@
                         </div>
                     </form>
                     <div class="sideHeader">
-                        <a href="#">
-                            <button>All</button>
-                        </a>
-                        <a href="controls/add_user.php">
+                        <a href="">
                             <button>Archives</button>
                         </a>
-                        <a href="controls/add_user.php">
+                        <a href="add-user.php">
                             <button>Create Account</button>
                         </a>
                     </div>
@@ -213,17 +210,21 @@
         </div>
     </div>
 
+    <!-- Bootstrap 5 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- SweetAlert2 JS -->
-    <script src="../sweetalert2/sweetalert2.all.min.js"></script>
-    <!-- AdminLTE Scripts -->
-    <script src="../AdminLTE/plugins/jquery/jquery.min.js"></script>
-    <script src="../AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../AdminLTE/dist/js/adminlte.min.js"></script>
+    <script src="../assets/sweetalert2/sweetalert2.all.min.js"></script>
+    <!-- AdminLTE Scripts -->    
+    <script src="../assets/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>    
+    <script src="../assets/AdminLTE/plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="../assets/AdminLTE/plugins/jquery/jquery.min.js"></script>    
+    <script src="../assets/AdminLTE/dist/js/adminlte.min.js"></script>
     <!-- AdminLTE Table -->
-    <script src="../AdminLTE/plugins/datatables/jquery.dataTables.min.js"></script>
-    <script src="../AdminLTE/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-    <script src="../AdminLTE/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="../AdminLTE/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="../assets/AdminLTE/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="../assets/AdminLTE/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="../assets/AdminLTE/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>    
+    <script src="../assets/AdminLTE/plugins/datatables/jquery.dataTables.min.js"></script>
+    
 
     <script>
         $(document).ready(function() {
@@ -275,6 +276,5 @@
             });
         }
     </script>
-
 </body>
 </html>

@@ -40,15 +40,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <header>
         <div class="logo">
-            <img src="images/msphLogo.png" alt="Logo Picture">
+            <img src="images/realogo.png" alt="Logo Picture">
         </div>
-        <ul>
-            <li>
-                <a href="index.php">
-                    <p>Go back</p>
-                </a>
-            </li>
-        </ul>
     </header>
     <div class="wrapper">
         

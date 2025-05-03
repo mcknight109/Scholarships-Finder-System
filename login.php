@@ -62,21 +62,16 @@ $updateLogin->execute();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/AdminLTE/dist/css/adminlte.min.css" />
+    <link rel="stylesheet" href="../assets/AdminLTE/plugins/fontawesome-free/css/all.css" />
     <link rel="stylesheet" href="index.scss">
     <title>Landing Page</title>
 </head>
 <body>
     <header>
         <div class="logo">
-            <img src="images/msphLogo.png" alt="Logo Picture">
+            <img src="images/realogo.png" alt="Logo Picture">
         </div>
-        <ul>
-            <li>
-                <a href="index.php">
-                    <p>Go back</p>
-                </a>
-            </li>
-        </ul>
     </header>
     <div class="wrapper">
         <div class="login-wrapper" id="loginModal"> 
@@ -89,7 +84,7 @@ $updateLogin->execute();
                     <div class="login-input">
                         <label for="">Email:</label><br>
                         <i>
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail">
                                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
                                 <polyline points="22,6 12,13 2,6"/>
                             </svg>
@@ -99,12 +94,12 @@ $updateLogin->execute();
                     <div class="login-input">
                         <label for="">Password:</label><br>
                         <i>
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock">
                                 <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
                                 <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
                             </svg>
                         </i>
-                        <input type="password" name="password" placeholder="*********" required>
+                        <input type="password" name="password" placeholder="Enter your password" required>
                     </div>
                     <div class="forget">
                         <a href="forget-password.php">Forget password?</a>
@@ -117,13 +112,12 @@ $updateLogin->execute();
                     </div>
                     <div class="create-btn">
                         <a href="register.php">
-                            <button>Create account</button>
+                            <button type="button">Create account</button>
                         </a>
                     </div>
                 </div>
             </div>
         </div>
-
     <!-- <script>
         const openLogin = document.getElementById("openLogin");
         const loginModal = document.getElementById("loginModal");

@@ -1,0 +1,285 @@
+/* Scholarship Application Form Styles */
+.applyWrapper {
+  background-color: #f8f9fa;
+  min-height: calc(100vh - 80px);
+  padding: 20px 0;
+
+  h2 {
+      color: #5c1d6f;
+      font-weight: 600;
+      font-size: 2rem;
+      margin-bottom: 20px;
+  }
+
+  h3 {
+      color: #5c1d6f;
+      font-weight: 500;
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+    }
+
+  .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      
+      .page-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 25px;
+          flex-wrap: wrap;
+          gap: 15px;
+      }
+
+      .btn-back {
+          background-color: #5c1d6f;
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 50px;
+          font-weight: 500;
+          transition: all 0.3s ease;
+          box-shadow: 0 2px 5px rgba(92, 29, 111, 0.3);
+          text-decoration: none;
+
+          i {
+              margin-right: 6px;
+            }
+
+          &:hover {
+              background-color: #4a1858;
+              box-shadow: 0 4px 8px rgba(92, 29, 111, 0.4);
+              transform: translateY(-2px);
+          }
+      }
+  }
+
+  .col-md-6{
+      margin-bottom: 10px;
+  }
+
+  .card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    margin-bottom: 25px;
+    background-color: white;
+    .card-body {
+      padding: 25px;
+    }
+  }
+}   
+
+  .applyWrapper .form-card {
+    height: 100%;
+  }
+  
+  .applyWrapper .form-label {
+    font-weight: 500;
+    color: #444;
+    margin-bottom: 8px;
+  }
+  
+  .applyWrapper .form-control {
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    transition: all 0.3s ease;
+  }
+  
+  .applyWrapper .form-control:focus {
+    border-color: #5c1d6f;
+    box-shadow: 0 0 0 3px rgba(92, 29, 111, 0.1);
+  }
+  
+  .applyWrapper .form-control:read-only {
+    background-color: #f8f9fa;
+    cursor: not-allowed;
+  }
+  
+  .applyWrapper textarea.form-control {
+    min-height: 120px;
+    resize: vertical;
+  }
+  
+  .applyWrapper .doc-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 15px;
+    height: 100%;
+    transition: all 0.3s ease;
+  }
+  
+  .applyWrapper .doc-card:hover {
+    border-color: #5c1d6f;
+    box-shadow: 0 5px 15px rgba(92, 29, 111, 0.1);
+  }
+  
+  .applyWrapper .doc-card .doc-title {
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+  }
+  
+  .applyWrapper .doc-card .form-control {
+    font-size: 0.9rem;
+  }
+  
+  .applyWrapper .text-muted {
+    font-size: 0.9rem;
+  }
+  
+  .applyWrapper .btn-submit {
+    background-color: #5c1d6f;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(92, 29, 111, 0.3);
+    width: 100%;
+  }
+  
+  .applyWrapper .btn-submit:hover {
+    background-color: #4a1858;
+    box-shadow: 0 6px 12px rgba(92, 29, 111, 0.4);
+    transform: translateY(-2px);
+  }
+  
+  .applyWrapper .alert {
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .applyWrapper .alert.alert-success {
+    background-color: #e8f5e9;
+    border-left: 4px solid #4caf50;
+    color: #2e7d32;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .applyWrapper {
+      padding: 15px;
+    }
+    
+    .applyWrapper h2 {
+      font-size: 1.5rem;
+    }
+    
+    .applyWrapper h3 {
+      font-size: 1.3rem;
+    }
+    
+    .applyWrapper .card-body {
+      padding: 20px;
+    }
+    
+    .applyWrapper .page-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .applyWrapper .page-header .btn-back {
+      align-self: flex-start;
+    }
+  }
+  
+  /* iPhone XR Specific (414px) */
+  @media (max-width: 414px) {
+    .applyWrapper {
+      padding: 10px;
+    }
+    
+    .applyWrapper .container {
+      padding: 0 10px;
+    }
+    
+    .applyWrapper h2 {
+      font-size: 1.3rem;
+    }
+    
+    .applyWrapper h3 {
+      font-size: 1.2rem;
+    }
+    
+    .applyWrapper .card-body {
+      padding: 15px;
+    }
+    
+    .applyWrapper .doc-card {
+      padding: 12px;
+      margin-bottom: 15px;
+    }
+    
+    .applyWrapper .btn-submit {
+      width: 100%;
+      padding: 12px;
+    }
+    
+    .applyWrapper .form-control {
+      padding: 10px;
+      font-size: 16px;
+    }
+  }
+
+  /* Demo specific styles */
+  .device-wrapper {
+    margin: 20px auto;
+    max-width: 100%;
+  }
+  
+  .device {
+    border: 12px solid #333;
+    border-radius: 36px;
+    box-shadow: 0 0 50px rgba(0,0,0,0.2);
+    overflow: hidden;
+    background: #f8f9fa;
+    position: relative;
+  }
+  
+  .device:before {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 60%;
+    height: 20px;
+    background: #333;
+    top: 0;
+    left: 20%;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+  
+  .desktop {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto 40px;
+    height: 600px;
+    overflow-y: auto;
+  }
+  
+  .mobile {
+    width: 375px;
+    margin: 0 auto;
+    height: 670px;
+    overflow-y: auto;
+  }
+  
+  .device-label {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #5c1d6f;
+    font-size: 1.2rem;
+  }
+
+  /* Custom styles for demo purposes */
+  .alert-success {
+    background-color: #e8f5e9;
+    border-left: 4px solid #4caf50;
+    color: #2e7d32;
+  }

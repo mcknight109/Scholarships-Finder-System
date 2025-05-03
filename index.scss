@@ -7,19 +7,17 @@
 
         
         header{            
-            height: 3.438rem;            
-            border: none;
-            
+            height: 3.125rem;
             display: flex;
-            align-items: center;            
+            align-items: center;
             justify-content: space-between;
+            border: none;
             padding: 0rem 1.875rem;
             border-bottom: 1px solid #5c1d6f30;
-            box-shadow: 0px 3px 10px 0px rgba(0,0,0,0.1) !important;
+            box-shadow: 0px 3px 10px 0px rgba(0,0,0,0.1);
 
             .logo{
-                background-color: #5c1d6f;
-                height: 2.5rem;
+                height: 1.75rem;
                 width: 7.5rem;
 
                 img{
@@ -118,7 +116,7 @@
                         label{
                             color: #441752;
                             margin: 0px 10px;
-                            font-size: 15px;
+                            font-size: 13px;
                             letter-spacing: 1px;
                         }
 

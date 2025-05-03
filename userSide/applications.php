@@ -5,15 +5,26 @@ include '../config.php';
 // Get user ID from session
 $studentId = $_SESSION['user_id'];
 
-// Get scholarship applications
-$query = "SELECT a.*, s.title 
-          FROM applications a 
-          JOIN scholarships s ON a.scholarship_id = s.id 
-          WHERE a.user_id = ?
-          ORDER BY a.applied_at DESC";
+$status = $_GET['status'] ?? 'all';
 
-$stmt = $conn->prepare($query);
-$stmt->bind_param("i", $studentId);
+if ($status === 'all') {
+    $query = "SELECT a.*, s.title 
+              FROM applications a 
+              JOIN scholarships s ON a.scholarship_id = s.id 
+              WHERE a.user_id = ?
+              ORDER BY a.applied_at DESC";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $studentId);
+} else {
+    $query = "SELECT a.*, s.title 
+              FROM applications a 
+              JOIN scholarships s ON a.scholarship_id = s.id 
+              WHERE a.user_id = ? AND a.status = ?
+              ORDER BY a.applied_at DESC";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("is", $studentId, $status);
+}
+
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -36,21 +47,21 @@ if ($picRow = $picResult->fetch_assoc()) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="../assets/AdminLTE/dist/css/adminlte.min.css">
-    <link rel="stylesheet" href="../assets/AdminLTE/plugins/bootstrap/bootstrap.min.js">
     <link rel="stylesheet" href="../assets/AdminLTE/plugins/fontawesome-free/css/all.css">
+    <link rel="stylesheet" href="../assets/AdminLTE/dist/css/adminlte.min.css">
     <link rel="stylesheet" href="../assets/sweetalert2/sweetalert2.min.css">
     <link rel="stylesheet" href="css/style.scss">
     <link rel="stylesheet" href="../alert.scss">
+    <title>Admin Dashboard</title>
 </head>
 <body>
     <div class="wrapper">
         <!-- Sidebar -->
         <div class="main-sidebar sidebar-dark-primary elevation-0">
-            <div class="nav-logo" href="admin-dashboard.php">
-                <span>STUDENT</span>
-            </div>
+        <div class="nav-logo" href="admin-dashboard.php">
+            <i class="fas fa-user-graduate mr-1 text-white"></i>
+            <span>WELCOME STUDENT</span>
+        </div>
             
             <div class="sidebar">
                 <nav class="mt-2">
@@ -136,19 +147,18 @@ if ($picRow = $picResult->fetch_assoc()) {
                             </div>
                         </div>
                     </form>
+                    <?php
+                        $filter = $_GET['status'] ?? 'all';
+                        function isActive($status, $current) {
+                            return ($status === $current) ? 'active' : '';
+                        }
+                    ?>
+
                     <div class="sideHeader" id="toggle-buttons">
-                        <a href="#">
-                            <button class="btn active">All</button>
-                        </a>
-                        <a href="#  ">
-                            <button class="btn">Pending</button>
-                        </a>
-                        <a href="#">
-                            <button class="btn">Approved</button>
-                        </a>
-                        <a href="#">
-                            <button class="btn">Rejected</button>
-                        </a>
+                        <a href="applications.php?status=all"><button class="btn <?= isActive($filter, 'all') ?>">All</button></a>
+                        <a href="applications.php?status=pending"><button class="btn <?= isActive($filter, 'pending') ?>">Pending</button></a>
+                        <a href="applications.php?status=approved"><button class="btn <?= isActive($filter, 'approved') ?>">Approved</button></a>
+                        <a href="applications.php?status=rejected"><button class="btn <?= isActive($filter, 'rejected') ?>">Rejected</button></a>
                     </div>
                 </div>
                 <div class="row">
@@ -174,7 +184,7 @@ if ($picRow = $picResult->fetch_assoc()) {
                                         </p>
 
                                         <!-- View Button -->
-                                        <a href="controls/view-application.php?id=<?php echo $row['id']; ?>" class="btn btn-primary btn-sm mt-2 me-2">
+                                        <a href="view-application.php?id=<?php echo $row['id']; ?>" class="btn btn-primary btn-sm mt-2 me-2">
                                             <i class="fas fa-eye me-1"></i> View
                                         </a>
                                     </div>
@@ -191,11 +201,14 @@ if ($picRow = $picResult->fetch_assoc()) {
         </div>
     </div>
 
+    <!-- Bootstrap 5 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- SweetAlert2 JS -->
-    <script src="../sweetalert2/sweetalert2.all.min.js"></script>
-    <!-- AdminLTE Scripts -->
-    <script src="../assets/AdminLTE/plugins/jquery/jquery.min.js"></script>
-    <script src="../assets/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/sweetalert2/sweetalert2.all.min.js"></script>
+    <!-- AdminLTE Scripts -->    
+    <script src="../assets/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>    
+    <script src="../assets/AdminLTE/plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="../assets/AdminLTE/plugins/jquery/jquery.min.js"></script>    
     <script src="../assets/AdminLTE/dist/js/adminlte.min.js"></script>
 
     <script>

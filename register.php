@@ -8,11 +8,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
 
-    // Check if passwords match
     if ($password !== $confirm_password) {
         $error = "Passwords do not match!";
     } else {
-        // Check if the email already exists in the database
         $query = "SELECT * FROM users WHERE email = ?";
         $stmt = $conn->prepare($query);
         $stmt->bind_param("s", $email);
@@ -22,11 +20,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($result->num_rows > 0) {
             $error = "Email is already registered!";
         } else {
-            // Hash the password before saving to database
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-            // Insert the new user into the database (role defaults to 'student')
-            $role = 'student'; // Default role
+            $role = 'student';
             $insert_query = "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)";
             $insert_stmt = $conn->prepare($insert_query);
             $insert_stmt->bind_param("ssss", $name, $email, $hashed_password, $role);
@@ -49,42 +44,71 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
+    <link rel="stylesheet" href="index.scss">
 </head>
 <body>
-    <div class="background-wrapper">
-        <div class="welcome-container">
-            <h1>Register for Scholarship Finder</h1><br>
+    <header>
+        <div class="logo">
+            <img src="images/realogo.png" alt="Logo Picture">
         </div>
-
-        <!-- Display success or error message -->
-        <?php if (isset($error)) { echo "<p style='color:red;'>$error</p>"; } ?>
-        <?php if (isset($_SESSION['success'])) { echo "<p style='color:green;'>".$_SESSION['success']."</p>"; unset($_SESSION['success']); } ?>
-
-        <div class="login-wrapper" id="registerModal"> 
+    </header>
+    <div class="wrapper">
+        <div class="login-wrapper">
             <div class="login-container">
                 <form action="register.php" method="POST">
-                    <h2 class="login-label">Create an Account</h2>
-                    <div class="login-input">
-                        <label for="">Name:</label><br>
-                        <input type="text" name="name" required>
+                    <div class="login-header">
+                        <h2>Create your Account</h2>
+                        <p><?php echo isset($error) ? htmlspecialchars($error) : ''; ?></p>
                     </div>
                     <div class="login-input">
-                        <label for="">Email:</label><br>
-                        <input type="email" name="email" required>
+                        <label>Name:</label><br>
+                        <i>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                <circle cx="12" cy="7" r="4"/></svg>
+                        </i>
+                        <input type="text" name="name" placeholder="Enter your name" required>
                     </div>
                     <div class="login-input">
-                        <label for="">Password:</label><br>
-                        <input type="password" name="password" required>
+                        <label>Email:</label><br>
+                        <i>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                <polyline points="22,6 12,13 2,6"/>
+                            </svg>
+                        </i>
+                        <input type="email" name="email" placeholder="Enter your email" required>
                     </div>
                     <div class="login-input">
-                        <label for="">Confirm Password:</label><br>
-                        <input type="password" name="confirm_password" required>
+                        <label>Password:</label><br>
+                        <i>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                            </svg>
+                        </i>
+                        <input type="password" name="password" placeholder="Enter your password" required>
+                    </div>
+                    <div class="login-input">
+                        <label>Confirm Password:</label><br>
+                        <i>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                            </svg>
+                        </i>
+                        <input type="password" name="confirm_password" placeholder="Confirm your password" required>
                     </div>
                     <div class="login-btn">
-                        <button type="submit">Register</button>
+                        <button type="submit">Create account</button>
                     </div>
-                    <div class="back-btn">
-                        <a href="login.php">Back to Login</a>
+                    <div class="divider">
+                        <span class="circle"></span>
+                    </div>
+                    <div class="create-btn">
+                        <a href="login.php">
+                            <button type="button">Login</button>
+                        </a>
                     </div>
                 </form>
             </div>

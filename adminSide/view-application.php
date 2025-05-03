@@ -1,5 +1,5 @@
 <?php
-include '../../config.php'; // Database connection
+include '../config.php'; // Database connection
 
 if (isset($_GET['id']) && isset($_GET['update'])) {
     $application_id = $_GET['id'];
@@ -32,33 +32,27 @@ if (isset($_GET['id'])) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../AdminLTE/dist/css/adminlte.min.css">
-    <link rel="stylesheet" href="../../AdminLTE/plugins/fontawesome-free/css/all.css">
-    <link rel="stylesheet" href="../css/style.scss">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+    <link rel="stylesheet" href="../assets/AdminLTE/plugins/fontawesome-free/css/all.css">
+    <link rel="stylesheet" href="../assets/AdminLTE/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="css/style.scss">
     <title>Document</title>
 </head>
 <body>
 <header>
     <div class="logo">
-        <img src="../../images/msphLogo.png" alt="Logo Picture">
+        <img src="../images/realogo.png" alt="Logo Picture">
     </div>
 
     <div class="nav-side">
-        <!-- <div class="noti">
-            <a class="nav-link" data-toggle="dropdown" href="#">
-            <i class="far fa-bell"></i> 
-            </a>
-        </div> -->
-
         <div class="prof-img">
             <a href="profile.php">
-            <img src="../../uploads/scholar3.jpg" alt="profile image">
+            <img src="../uploads/scholar3.jpg" alt="profile image">
             </a>
         </div>
 
         <div class="logout-btn">
-            <a href="../../logout.php">
+            <a href="../logout.php">
             <i class="fas fa-sign-out-alt"></i>
             </a>
         </div>
@@ -68,7 +62,7 @@ if (isset($_GET['id'])) {
         <div class="container my-5">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2>View Application</h2>
-                <a href="../applicants.php" class="btn btn-secondary">Go Back</a>
+                <a href="applicants.php" class="btn btn-secondary">Go Back</a>
             </div>
             <?php if ($application): ?>
                 <div class="card shadow-sm">
@@ -138,6 +132,14 @@ if (isset($_GET['id'])) {
             <?php endif; ?>
         </div>
     </div>
-
+    <!-- Bootstrap 5 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- SweetAlert2 JS -->
+    <script src="../assets/sweetalert2/sweetalert2.all.min.js"></script>
+    <!-- AdminLTE Scripts -->    
+    <script src="../assets/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>    
+    <script src="../assets/AdminLTE/plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="../assets/AdminLTE/plugins/jquery/jquery.min.js"></script>    
+    <script src="../assets/AdminLTE/dist/js/adminlte.min.js"></script>
 </body>
 </html>

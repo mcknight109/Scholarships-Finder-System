@@ -1,5 +1,5 @@
 <?php
-include '../../config.php'; // adjust path as needed
+include '../config.php'; // adjust path as needed
 
 // Get the ID from the URL
 if (!isset($_GET['id']) || empty($_GET['id'])) {
@@ -61,24 +61,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Edit Scholarship</title>
-  <link rel="stylesheet" href="../AdminLTE/dist/css/adminlte.min.css">
-  <link rel="stylesheet" href="../AdminLTE/plugins/fontawesome-free/css/all.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="../css/style.scss">
+  <link rel="stylesheet" href="../AdminLTE/plugins/fontawesome-free/css/all.css">
+  <link rel="stylesheet" href="../AdminLTE/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="css/style.scss">
+  <link rel="stylesheet" href="css/temp2.scss">
+  <title>Edit Scholarship</title>
 </head>
 <body>
   <header>
     <div class="logo">
-      <img src="../../images/msphLogo.png" alt="Logo Picture">
+      <img src="../images/realogo.png" alt="Logo Picture">
     </div>
   </header>
 
   <div class="createWrapper">
-    <div class="container my-5">
+    <div class="container my-3">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Edit Scholarship</h2>
-        <a href="../scholarships.php" class="btn btn-secondary">Back to List</a>
+        <a href="scholarships.php" class="btn btn-secondary">Back to List</a>
       </div>
 
       <?php if ($message): ?>
@@ -131,9 +132,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       </form>
     </div>
   </div>
-
-  <script src="../AdminLTE/plugins/jquery/jquery.min.js"></script>
-  <script src="../AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="../AdminLTE/dist/js/adminlte.min.js"></script>
+  <!-- Bootstrap 5 -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- SweetAlert2 JS -->
+  <script src="../assets/sweetalert2/sweetalert2.all.min.js"></script>
+  <!-- AdminLTE Scripts -->    
+  <script src="../assets/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>    
+  <script src="../assets/AdminLTE/plugins/bootstrap/bootstrap.min.js"></script>
+  <script src="../assets/AdminLTE/plugins/jquery/jquery.min.js"></script>    
+  <script src="../assets/AdminLTE/dist/js/adminlte.min.js"></script>
 </body>
 </html>

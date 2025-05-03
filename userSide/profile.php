@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (!empty($new_password)) {
         $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
-        $update_sql = "UPDATE users SET name=?, email=?, password=? gender=?, picture=? WHERE id=?";
+        $update_sql = "UPDATE users SET name=?, email=?, password=?, gender=?, picture=? WHERE id=?";
         $stmt = $conn->prepare($update_sql);
         $stmt->bind_param("sssssi", $new_name, $new_email, $hashed_password, $new_gender, $picture_filename, $user_id);
     } else {
@@ -48,10 +48,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bind_param("ssssi", $new_name, $new_email, $new_gender, $picture_filename, $user_id);
     }
 
+    $update_success = false;
+
     if ($stmt->execute()) {
-        echo "<script>alert('Profile updated successfully!'); location.href='profile.php';</script>";
+        $update_success = true;
     } else {
-        echo "<script>alert('Error updating profile.');</script>";
+        $update_success = false;
     }
 
     $stmt->close();
@@ -63,19 +65,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Student Profile</title>
-    <link rel="stylesheet" href="../assets/AdminLTE/dist/css/adminlte.min.css">
-    <link rel="stylesheet" href="../assets/AdminLTE/plugins/bootstrap/bootstrap.min.js">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="../assets/AdminLTE/plugins/fontawesome-free/css/all.css">
-    <link rel="stylesheet" href="css/style.scss">
+    <link rel="stylesheet" href="../assets/AdminLTE/dist/css/adminlte.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="css/style.scss">
+    <link rel="stylesheet" href="../alert.scss">
+    <title>Student Profile</title>
 </head>
 <body>
     <div class="wrapper">
         <!-- Sidebar -->
         <div class="main-sidebar sidebar-dark-primary elevation-0">
-            <div class="nav-logo" href="home-page.php">
-                <span>STUDENT</span>
+            <div class="nav-logo" href="admin-dashboard.php">
+                <i class="fas fa-user-graduate mr-1 text-white"></i>
+                <span>WELCOME STUDENT</span>
             </div>
         <div class="sidebar">
             <nav class="mt-2">
@@ -123,19 +127,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <i class="fas fa-bars"></i>
                 </a>
             </li>
-            <!-- Right navbar -->
-            <!-- <li class="nav-item d-flex align-items-center">
-                <form class="form-inline" style="width: 300px;">
-                    <div class="input-group input-group-sm">
-                        <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-                            <div class="input-group-append">
-                            <button class="btn btn-navbar border " type="submit">
-                            <i class="fas fa-search"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </li> -->
         </ul>
         <div class="nav-side">
             <div class="noti">
@@ -159,43 +150,55 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </nav>
     
 
-        <div class="content-wrapper d-flex flex-wrap">
-            <div class="profile-wrapper">
-                <div class="form-header"><h3>Edit Profile</h3></div>
-                <form method="POST" action="" enctype="multipart/form-data">
-                    <div class="pfp text-center">
-                        <img id="previewImage" src="<?= !empty($picture) ? '../uploads/' . htmlspecialchars($picture) : 'default-avatar.png' ?>" width="120" height="120">
-                        <br><br>
-                        <input type="file" name="picture" accept="image/*" onchange="previewProfileImage(this)">
+        <div class="content-wrapper">
+            <div class="profile-container">
+                <div class="profile-form">
+                    <div class="form-header">
+                        <h2>Edit Profile</h2>
                     </div>
-                    <div class="form-container">
-                        <div class="form-input">
-                            <label>Name:</label>
-                            <input type="text" name="name" value="<?= htmlspecialchars($name) ?>" required>
+                    <form method="POST" action="" enctype="multipart/form-data">
+                        <div class="text-center mb-4">
+                            <img id="previewImage" src="<?= !empty($picture) ? '../uploads/' . htmlspecialchars($picture) : 'default-avatar.png' ?>" width="120" height="120" style="border-radius: 50%; border: 1px solid #892ea4;">
+                            <br><br>
+                            <input type="file" name="picture" accept="image/*" onchange="previewProfileImage(this)" class="form-control-file">
                         </div>
-                        <div class="form-input">
+                        <div class="form-group">
+                            <label>Name:</label>
+                            <input type="text" name="name" value="<?= htmlspecialchars($name) ?>" required class="form-control" style="border-radius: 20px; border: 1px solid #892ea4;">
+                        </div>
+                        <div class="form-group">
                             <label>Gender:</label>
-                            <select name="gender" required>
+                            <select name="gender" required class="form-control" style="border-radius: 20px; border: 1px solid #892ea4;">
                                 <option value="Male" <?= $gender === 'male' ? 'selected' : '' ?>>Male</option>
                                 <option value="Female" <?= $gender === 'female' ? 'selected' : '' ?>>Female</option>
                             </select>
                         </div>
-                        <div class="form-input">
+                        <div class="form-group">
                             <label>Email:</label>
-                            <input type="email" name="email" value="<?= htmlspecialchars($email) ?>" required>
+                            <input type="email" name="email" value="<?= htmlspecialchars($email) ?>" required class="form-control" style="border-radius: 20px; border: 1px solid #892ea4;">
                         </div>
-                        <div class="form-input">
+                        <div class="form-group">
                             <label>Password:</label>
-                            <input type="password" name="password" placeholder="Leave blank to keep current">
+                            <input type="password" name="password" placeholder="Leave blank to keep current" class="form-control" style="border-radius: 20px; border: 1px solid #892ea4;">
                         </div>
-                        <div class="action-btn mt-3">
-                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <div class="action-btn">
+                            <button type="submit" style="border-radius: 20px; height: 45px; width: 100%; border: 0; background-color: #892ea4; color: #ffffff;">Save Changes</button>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- Bootstrap 5 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- SweetAlert2 JS -->
+    <script src="../assets/sweetalert2/sweetalert2.all.min.js"></script>
+    <!-- AdminLTE Scripts -->    
+    <script src="../assets/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>    
+    <script src="../assets/AdminLTE/plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="../assets/AdminLTE/plugins/jquery/jquery.min.js"></script>    
+    <script src="../assets/AdminLTE/dist/js/adminlte.min.js"></script>
 
     <script>
         function previewProfileImage(input) {
@@ -206,8 +209,49 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             reader.readAsDataURL(input.files[0]);
         }
     </script>
-    <script src="../assets/AdminLTE/plugins/jquery/jquery.min.js"></script>
-    <script src="../assets/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/AdminLTE/dist/js/adminlte.min.js"></script>
+
+<?php if (isset($update_success) && $update_success): ?>
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Profile Updated!',
+        text: 'Your changes have been saved successfully.',
+        confirmButtonText: 'Go Back',
+        width: 330,
+        customClass: {
+            popup: 'custom-swal-popup',
+            title: 'custom-swal-title',
+            htmlContainer: 'custom-swal-text',
+            icon: 'custom-swal-icon',
+            confirmButton: 'custom-swal-btn',
+            cancelButton: 'custom-swal-cancel'
+        },
+        buttonsStyling: false
+    }).then(() => {
+        window.location.href = 'profile.php';
+    });
+
+</script>
+    <?php elseif (isset($update_success) && !$update_success): ?>
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Update Failed!',
+            text: 'There was a problem saving your changes.',
+            confirmButtonText: 'Go Back',
+            width: 330,
+            customClass: {
+                popup: 'custom-swal-popup',
+                title: 'custom-swal-title',
+                htmlContainer: 'custom-swal-text',
+                icon: 'custom-swal-icon',
+                confirmButton: 'custom-swal-btn',
+                cancelButton: 'custom-swal-cancel'
+            },
+            buttonsStyling: false
+        });
+</script>
+    <?php endif; ?>
+
 </body>
 </html>

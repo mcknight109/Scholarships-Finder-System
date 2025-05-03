@@ -17,6 +17,16 @@ $user_result = $user_stmt->get_result();
 $user = $user_result->fetch_assoc();
 $profilePic = !empty($user['picture']) ? $user['picture'] : 'default.png';
 
+// Fetch applied scholarships for this user
+$applied_ids = [];
+$app_stmt = $conn->prepare("SELECT scholarship_id FROM applications WHERE user_id = ?");
+$app_stmt->bind_param("i", $user_id);
+$app_stmt->execute();
+$app_result = $app_stmt->get_result();
+while ($app_row = $app_result->fetch_assoc()) {
+    $applied_ids[] = $app_row['scholarship_id'];
+}
+
 // Fetch scholarships
 $search = $_GET['search'] ?? '';
 $filter = $_GET['filter'] ?? '';
@@ -36,28 +46,33 @@ if (!empty($filter) && in_array($filter, ['open', 'closed'])) {
 $query .= " ORDER BY deadline DESC";
 $result = $conn->query($query);
 
+// Fetch applied scholarships count for this user
+$app_count_stmt = $conn->prepare("SELECT COUNT(*) AS applied_count FROM applications WHERE user_id = ?");
+$app_count_stmt->bind_param("i", $user_id);
+$app_count_stmt->execute();
+$app_count_result = $app_count_stmt->get_result();
+$app_count_row = $app_count_result->fetch_assoc();
+$applied_count = $app_count_row['applied_count'];
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Student Dashboard</title>
-  <link rel="stylesheet" href="../assets/AdminLTE/dist/css/adminlte.min.css" />
-  <link rel="stylesheet" href="../assets/AdminLTE/plugins/bootstrap/bootstrap.min.js" />
   <link rel="stylesheet" href="../assets/AdminLTE/plugins/fontawesome-free/css/all.css" />
+  <link rel="stylesheet" href="../assets/AdminLTE/dist/css/adminlte.min.css" />
   <link rel="stylesheet" href="../assets/sweetalert2/sweetalert2.min.css">
   <link rel="stylesheet" href="css/style.scss">
   <link rel="stylesheet" href="../alert.scss">
+  <title>Student Dashboard</title>  
 </head>
 <body>
   <div class="wrapper">
     <!-- Sidebar -->
     <div class="main-sidebar sidebar-dark-primary elevation-0">
-      <div class="nav-logo" href="home-page.php">
-        <span>STUDENT</span>
+      <div class="nav-logo" href="admin-dashboard.php">
+        <i class="fas fa-user-graduate mr-1 text-white"></i>
+        <span>WELCOME STUDENT</span>
       </div>
 
       <div class="sidebar">
@@ -106,19 +121,6 @@ $result = $conn->query($query);
             <i class="fas fa-bars"></i>
           </a>
         </li>
-        <!-- Right navbar -->
-        <!-- <li class="nav-item d-flex align-items-center">
-          <form class="form-inline" style="width: 300px;">
-            <div class="input-group input-group-sm">
-              <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-                <div class="input-group-append">
-                <button class="btn btn-navbar border " type="submit">
-                  <i class="fas fa-search"></i>
-                </button>
-              </div>
-            </div>
-          </form>
-        </li> -->
       </ul>
       <div class="nav-side">
         <div class="noti">
@@ -131,7 +133,6 @@ $result = $conn->query($query);
             <img src="../uploads/<?php echo htmlspecialchars($profilePic); ?>" alt="profile image">
           </a>
         </div>
-
         <div class="logout-btn">
           <a href="../logout.php">
             <i class="fas fa-sign-out-alt"></i>
@@ -199,7 +200,11 @@ $result = $conn->query($query);
                 <p><?php echo ucfirst($row['status']); ?></p>
               </div>
               <div class="apply-btn">
-                <button onclick="confirmApply(<?php echo $row['id']; ?>)">Apply Now</button>
+                <?php if (in_array($row['id'], $applied_ids)): ?>
+                  <button disabled style="background-color: gray; cursor: not-allowed;">Applied</button>
+                <?php else: ?>
+                  <button onclick="confirmApply(<?php echo $row['id']; ?>)">Apply Now</button>
+                <?php endif; ?>
               </div>
             </div>
           <?php endwhile; ?>
@@ -215,7 +220,7 @@ $result = $conn->query($query);
         <div class="pfp-info">
           <p><?php echo htmlspecialchars($user['name']); ?></p>
 
-          <p><span>Applied:</span> 4</p>
+          <p><span>Applied:</span> <?php echo $applied_count; ?></p>
 
           <div class="activeStatus">
             <?php if (isset($_SESSION['user_id'])): ?>
@@ -231,11 +236,14 @@ $result = $conn->query($query);
     </div>
   </div>
 
+  <!-- Bootstrap 5 -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <!-- SweetAlert2 JS -->
   <script src="../assets/sweetalert2/sweetalert2.all.min.js"></script>
-  <!-- AdminLTE Scripts -->
-  <script src="../assets/AdminLTE/plugins/jquery/jquery.min.js"></script>
-  <script src="../assets/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- AdminLTE Scripts -->    
+  <script src="../assets/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>    
+  <script src="../assets/AdminLTE/plugins/bootstrap/bootstrap.min.js"></script>
+  <script src="../assets/AdminLTE/plugins/jquery/jquery.min.js"></script>    
   <script src="../assets/AdminLTE/dist/js/adminlte.min.js"></script>
 
   <script>

@@ -12,6 +12,8 @@ if (isset($_GET['id']) && isset($_GET['update'])) {
     $stmt->close();
 }
 
+$filter = isset($_GET['status']) ? $_GET['status'] : 'all';
+
 $query = "
     SELECT 
         applications.id AS application_id,
@@ -22,7 +24,16 @@ $query = "
     INNER JOIN users ON applications.user_id = users.id
     INNER JOIN scholarships ON applications.scholarship_id = scholarships.id
 ";
-$result = $conn->query($query);
+
+if ($filter !== 'all') {
+    $query .= " WHERE applications.status = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("s", $filter);
+    $stmt->execute();
+    $result = $stmt->get_result();
+} else {
+    $result = $conn->query($query);
+}
 ?>
 
 <!DOCTYPE html>
@@ -31,10 +42,9 @@ $result = $conn->query($query);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="../AdminLTE/dist/css/adminlte.min.css">
-    <link rel="stylesheet" href="../AdminLTE/plugins/bootstrap/bootstrap.min.js">
-    <link rel="stylesheet" href="../AdminLTE/plugins/fontawesome-free/css/all.css">
-    <link rel="stylesheet" href="../sweetalert2/sweetalert2.min.css">
+    <link rel="stylesheet" href="../assets/AdminLTE/plugins/fontawesome-free/css/all.css">  
+    <link rel="stylesheet" href="../assets/AdminLTE/dist/css/adminlte.min.css">    
+    <link rel="stylesheet" href="../assets/sweetalert2/sweetalert2.min.css">
     <link rel="stylesheet" href="css/style.scss">
     <link rel="stylesheet" href="../alert.scss">
 </head>
@@ -44,6 +54,7 @@ $result = $conn->query($query);
         <!-- Sidebar -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <div class="nav-logo" href="admin-dashboard.php">
+                <i class="fas fa-user-shield mr-1 text-white"></i>
                 <span>WELCOME ADMIN</span>
             </div>
             
@@ -140,9 +151,19 @@ $result = $conn->query($query);
                             </div>
                         </div>
                     </form>
-                    <div class="create-btn">
-                        <a href="controls/create-scholar.php">
-                        <button>Create Scholarship</button>
+                    <?php $currentStatus = isset($_GET['status']) ? $_GET['status'] : 'all'; ?>
+                    <div class="sideHeader" id="toggle-buttons">
+                        <a href="applicants.php?status=all">
+                            <button class="btn <?= $currentStatus === 'all' ? 'active' : '' ?>">All</button>
+                        </a>
+                        <a href="applicants.php?status=pending">
+                            <button class="btn <?= $currentStatus === 'pending' ? 'active' : '' ?>">Pending</button>
+                        </a>
+                        <a href="applicants.php?status=approved">
+                            <button class="btn <?= $currentStatus === 'approved' ? 'active' : '' ?>">Approved</button>
+                        </a>
+                        <a href="applicants.php?status=rejected">
+                            <button class="btn <?= $currentStatus === 'rejected' ? 'active' : '' ?>">Rejected</button>
                         </a>
                     </div>
                 </div>
@@ -166,7 +187,7 @@ $result = $conn->query($query);
                                     </p>
                                     <!-- Action Buttons -->
                                     <div class="mt-auto d-flex justify-content-between">
-                                    <a href="controls/view-application.php?id=<?= $row['application_id'] ?>&update=1" class="btn btn-outline-primary btn-sm">
+                                    <a href="view-application.php?id=<?= $row['application_id'] ?>&update=1" class="btn btn-outline-primary btn-sm">
                                         <i class="fas fa-eye me-1"></i>View
                                     </a>
                                     <button class="btn btn-outline-danger btn-sm" onclick="confirmDelete(<?= $row['application_id'] ?>)">
@@ -231,10 +252,24 @@ $result = $conn->query($query);
             });
         }
     </script>
-    
-    <script src="../sweetalert2/sweetalert2.all.min.js"></script>
-    <script src="../AdminLTE/plugins/jquery/jquery.min.js"></script>
-    <script src="../AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../AdminLTE/dist/js/adminlte.min.js"></script>
+
+    <script>
+        document.getElementById("toggle-buttons").addEventListener('click', function(e){
+            if (e.target.classList.contains('btn')){
+            const buttons = document.querySelectorAll('#toggle-buttons, .btn');
+            buttons.forEach(btn => btn.classList.remove('active'))
+            e.target.classList.add('active');
+            }
+        });
+    </script>
+    <!-- Bootstrap 5 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- SweetAlert2 JS -->
+    <script src="../assets/sweetalert2/sweetalert2.all.min.js"></script>
+    <!-- AdminLTE Scripts -->    
+    <script src="../assets/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>    
+    <script src="../assets/AdminLTE/plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="../assets/AdminLTE/plugins/jquery/jquery.min.js"></script>    
+    <script src="../assets/AdminLTE/dist/js/adminlte.min.js"></script>
 </body>
 </html>

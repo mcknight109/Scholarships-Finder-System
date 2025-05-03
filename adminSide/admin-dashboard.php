@@ -9,21 +9,77 @@ $stmt->bind_param("s", $yesterday);
 $stmt->execute();
 $result = $stmt->get_result();
 
-// Fetch gender distribution
-$genderData = ['Male' => 0, 'Female' => 0, 'Other' => 0];
+// Fetch application count per scholarship per month
+$barData = [];
 
-$genderSql = "SELECT gender, COUNT(*) as count FROM users WHERE gender IS NOT NULL GROUP BY gender";
-$genderResult = $conn->query($genderSql);
+// Fetch scholarship count per month
+$scholarshipQuery = "
+    SELECT 
+        DATE_FORMAT(created_at, '%Y-%m') AS month,
+        COUNT(*) AS total_scholarships
+    FROM scholarships
+    GROUP BY month
+    ORDER BY month ASC
+";
+$scholarshipResult = $conn->query($scholarshipQuery);
 
-if ($genderResult->num_rows > 0) {
-    while ($row = $genderResult->fetch_assoc()) {
-        $gender = ucfirst(strtolower(trim($row['gender']))); // Normalize
-        if (!isset($genderData[$gender])) {
-            $genderData[$gender] = 0;
-        }
-        $genderData[$gender] += $row['count'];
+// Fetch application count per month
+$applicationsQuery = "
+    SELECT 
+        DATE_FORMAT(applied_at, '%Y-%m') AS month,
+        COUNT(*) AS total_applications
+    FROM applications
+    GROUP BY month
+    ORDER BY month ASC
+";
+$applicationsResult = $conn->query($applicationsQuery);
+
+// Initialize months
+$months = [
+    "January" => 0, "February" => 0, "March" => 0, "April" => 0,
+    "May" => 0, "June" => 0, "July" => 0, "August" => 0,
+    "September" => 0, "October" => 0, "November" => 0, "December" => 0
+];
+
+// Override with actual data for scholarships and applications
+$scholarshipMonths = $months;
+$applicationsMonths = $months;
+
+while ($row = $scholarshipResult->fetch_assoc()) {
+    $monthNum = $row['month']; // e.g. 2025-05
+    $monthName = date("F", strtotime($monthNum));
+    if (isset($scholarshipMonths[$monthName])) {
+        $scholarshipMonths[$monthName] = (int)$row['total_scholarships'];
     }
 }
+
+while ($row = $applicationsResult->fetch_assoc()) {
+    $monthNum = $row['month']; // e.g. 2025-05
+    $monthName = date("F", strtotime($monthNum));
+    if (isset($applicationsMonths[$monthName])) {
+        $applicationsMonths[$monthName] = (int)$row['total_applications'];
+    }
+}
+
+// Prepare the data for the chart
+$labels = array_keys($months);
+$scholarshipData = array_values($scholarshipMonths);
+$applicationsData = array_values($applicationsMonths);
+
+// Add to datasets
+$datasets = [
+    [
+        'label' => 'Scholarships Created',
+        'data' => $scholarshipData,
+        'backgroundColor' => 'rgba(255, 99, 132, 0.7)'
+    ],
+    [
+        'label' => 'Applications Applied',
+        'data' => $applicationsData,
+        'backgroundColor' => 'rgba(54, 162, 235, 0.7)'
+    ]
+];
+
 
 // Count Active Scholarships
 $activeScholarshipsQuery = "SELECT COUNT(*) as total FROM scholarships";
@@ -62,20 +118,20 @@ function timeAgo($datetime) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="../AdminLTE/dist/css/adminlte.min.css">
-    <link rel="stylesheet" href="../AdminLTE/plugins/bootstrap/bootstrap.min.js">
-    <link rel="stylesheet" href="../AdminLTE/plugins/fontawesome-free/css/all.css">
-    <link rel="stylesheet" href="css/style.scss">
+    <link rel="stylesheet" href="../assets/AdminLTE/plugins/fontawesome-free/css/all.css">
+    <link rel="stylesheet" href="../assets/AdminLTE/dist/css/adminlte.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="css/style.scss">
+    <title>Admin Dashboard</title>    
 </head>
 <body>
     <div class="wrapper">
         <!-- Sidebar -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
-            <div class="nav-logo" href="admin-dashboard.php">
-                <span>WELCOME ADMIN</span>
-            </div>
+        <div class="nav-logo" href="admin-dashboard.php">
+            <i class="fas fa-user-shield mr-1 text-white"></i>
+            <span>WELCOME ADMIN</span>
+        </div>
             
             <div class="sidebar">
                 <nav class="mt-2">
@@ -174,7 +230,6 @@ function timeAgo($datetime) {
             </div>
 
             <div class="dash-con">
-
                 <div class="con-1">
                     <!-- Info Boxes -->
                     <div class="row">
@@ -212,14 +267,13 @@ function timeAgo($datetime) {
                         </div>
                     </div>
 
-                    <!-- Gender Distribution Pie -->
-                    <div class="col-md-6 col-sm-6">
+                    <div class="col-md-12 col-sm-12">
                         <div class="card card-info shadow">
                             <div class="card-header">
-                                <h3 class="card-title"><i class="fas fa-venus-mars"></i> Gender Distribution</h3>
+                                <h3 class="card-title"><i class="fas fa-chart-bar"></i> Applications per Scholarship (Monthly)</h3>
                             </div>
                             <div class="card-body">
-                                <canvas id="genderPieChart"></canvas>
+                                <canvas id="applicationsBarChart" style="height: 300px;"></canvas>
                             </div>
                         </div>
                     </div>
@@ -263,16 +317,12 @@ function timeAgo($datetime) {
     </div>
 
     <script>
-        const ctx = document.getElementById('genderPieChart').getContext('2d');
-        const genderPieChart = new Chart(ctx, {
-            type: 'pie',
+        const barCtx = document.getElementById('applicationsBarChart').getContext('2d');
+        const barChart = new Chart(barCtx, {
+            type: 'bar',
             data: {
-                labels: <?= json_encode(array_keys($genderData)) ?>,
-                datasets: [{
-                    data: <?= json_encode(array_values($genderData)) ?>,
-                    backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745'],
-                    borderWidth: 1
-                }]
+                labels: <?= json_encode($labels) ?>,
+                datasets: <?= json_encode($datasets) ?>
             },
             options: {
                 responsive: true,
@@ -281,12 +331,22 @@ function timeAgo($datetime) {
                         position: 'bottom'
                     },
                     tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                let label = context.label || '';
-                                let value = context.raw || 0;
-                                return `${label}: ${value}`;
-                            }
+                        mode: 'index',
+                        intersect: false
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Month'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Number of Entries'
                         }
                     }
                 }
@@ -294,10 +354,14 @@ function timeAgo($datetime) {
         });
     </script>
 
-    <!-- AdminLTE Scripts -->
+    <!-- Bootstrap 5 -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="../AdminLTE/plugins/jquery/jquery.min.js"></script>
-    <script src="../AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../AdminLTE/dist/js/adminlte.min.js"></script>
+    <!-- SweetAlert2 JS -->
+    <script src="../assets/sweetalert2/sweetalert2.all.min.js"></script>
+    <!-- AdminLTE Scripts -->    
+    <script src="../assets/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>    
+    <script src="../assets/AdminLTE/plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="../assets/AdminLTE/plugins/jquery/jquery.min.js"></script>    
+    <script src="../assets/AdminLTE/dist/js/adminlte.min.js"></script>
 </body>
 </html>

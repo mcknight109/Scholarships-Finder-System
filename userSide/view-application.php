@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../../config.php';
+include '../config.php';
 
 $user_id = $_SESSION['user_id'] ?? null;
 
@@ -13,7 +13,7 @@ if (!$user_id) {
 $sql = "SELECT 
             a.id AS application_id, a.age, a.contact, a.address, a.school, a.grade_level, 
             a.reason, a.document, a.status, 
-            u.name, u.gender,
+            u.name, u.gender, u.picture,
             s.title AS scholarship_title
         FROM applications a
         JOIN users u ON a.user_id = u.id
@@ -31,30 +31,43 @@ $application = $result->fetch_assoc();
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>My Application</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../sweetalert2/sweetalert2.min.css">
-    <link rel="stylesheet" href="../css/style.scss">
+    <link rel="stylesheet" href="../sweetalert2/sweetalert2.min.css">
+    <link rel="stylesheet" href="css/style.scss">
+    <link rel="stylesheet" href="css/temp2.scss">
+    <title>My Application</title>
+    <style>
+    </style>
 </head>
 <body>
 <header>
     <div class="logo">
-        <img src="../../images/msphLogo.png" alt="Logo Picture">
+        <img src="../images/realogo.png" alt="Logo Picture">
     </div>
-    <ul>
-        <li>
-            <a href="index.php">
-                <p>Go back</p>
-            </a>
-        </li>
-    </ul>
+    <div class="nav-side">
+    <div class="noti">
+        <a class="nav-link" data-toggle="dropdown" href="#">
+            <i class="far fa-bell"></i>
+        </a>
+    </div>
+    <div class="prof-img">
+        <a href="profile.php">
+        <img src="../uploads/<?php echo htmlspecialchars($application['picture']); ?>" alt="profile image">
+        </a>
+    </div>
+    <div class="logout-btn">
+        <a href="../logout.php">
+            <i class="fas fa-sign-out-alt"></i>
+        </a>
+    </div>
+    </div>
 </header>
 
 <div class="viewWrapper">
     <div class="container my-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>Applied Scholarship: <?= htmlspecialchars($application['scholarship_title']) ?></h2>
-            <a href="../applications.php" class="btn btn-secondary">Go Back</a>
+            <a href="applications.php" class="btn btn-secondary">Go Back</a>
         </div>
 
         <div class="card shadow-sm mb-4">
@@ -108,6 +121,13 @@ $application = $result->fetch_assoc();
                 </div>
 
                 <div class="mb-3">
+                    <label class="form-label">Application Status</label>
+                    <p class="form-control-plaintext">
+                        <?= ucfirst(strtolower($application['status'])) ?>
+                    </p>
+                </div>
+
+                <div class="mb-3">
                     <label class="form-label">Submitted Document</label><br>
                     <?php if (!empty($application['document'])): ?>
                         <a href="../../uploads/<?= htmlspecialchars($application['document']) ?>" target="_blank" class="btn btn-primary btn-sm mt-2">
@@ -116,20 +136,6 @@ $application = $result->fetch_assoc();
                     <?php else: ?>
                         <p class="text-muted mt-2">No document uploaded.</p>
                     <?php endif; ?>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Application Status</label>
-                    <p class="form-control-plaintext">
-                        <?= ucfirst(strtolower($application['status'])) ?>
-                    </p>
-                </div>
-
-                <div class="d-flex justify-content-between">
-                    <a href="../stud-applications.php" class="btn btn-secondary">Back</a>
-                    <button type="button" class="btn btn-danger" onclick="confirmCancel(<?= $application['application_id'] ?>)">
-                        Cancel Application
-                    </button>
                 </div>
             </form>
             <?php else: ?>
@@ -143,34 +149,41 @@ $application = $result->fetch_assoc();
 </div>
     
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../../sweetalert2/sweetalert2.all.min.js"></script>
-<script>
-    function confirmCancel(applicationId) {
-        Swal.fire({
-            title: "Are you sure?",
-            text: "You are about to cancel your application.",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "",
-            cancelButtonColor: "#6c757d",
-            confirmButtonText: "Yes, cancel it",
-            width: 330,
-                customClass: {
-                popup: 'custom-swal-popup',
-                title: 'custom-swal-title',
-                htmlContainer: 'custom-swal-text',
-                icon: 'custom-swal-icon',
-                confirmButton: 'custom-swal-btn',
-                cancelButton: 'custom-swal-cancel'
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap 5 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- SweetAlert2 JS -->
+    <script src="../assets/sweetalert2/sweetalert2.all.min.js"></script>
+    <!-- AdminLTE Scripts -->    
+    <script src="../assets/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>    
+    <script src="../assets/AdminLTE/plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="../assets/AdminLTE/plugins/jquery/jquery.min.js"></script>    
+    <script src="../assets/AdminLTE/dist/js/adminlte.min.js"></script>
+    <script>
+        function confirmCancel(applicationId) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You are about to cancel your application.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "",
+                cancelButtonColor: "#6c757d",
+                confirmButtonText: "Yes, cancel it",
+                width: 330,
+                    customClass: {
+                    popup: 'custom-swal-popup',
+                    title: 'custom-swal-title',
+                    htmlContainer: 'custom-swal-text',
+                    icon: 'custom-swal-icon',
+                    confirmButton: 'custom-swal-btn',
+                    cancelButton: 'custom-swal-cancel'
+                    }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = `cancel-application.php?id=${applicationId}`;
                 }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = `cancel-application.php?id=${applicationId}`;
-            }
-        });
-    }
-</script>
-
+            });
+        }
+    </script>
 </body>
 </html>
