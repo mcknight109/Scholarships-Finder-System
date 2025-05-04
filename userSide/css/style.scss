@@ -6,7 +6,7 @@
     
     body{
         margin: 0;
-        font-family: Arial, Helvetica, sans-serif;
+        font-family: 'Cambria', serif;
 
 
 
@@ -245,7 +245,8 @@
                     }
     
                     &:hover{
-                        background-color: #69227e;
+                        transition: all 0.2s ease;
+                        background-color: #7e2998;
                     }
                 }
             }
@@ -294,6 +295,9 @@
         
                         input{
                             border-radius: 10px;
+                            color: #343a40;
+                            border-left: 3px solid #5c1d6f;
+
                         }
         
                         .input-group{
@@ -302,6 +306,9 @@
                                 width: 40px;
                                 border-top-right-radius: 10px;
                                 border-bottom-right-radius: 10px;
+                                i{
+                                    color: #441752;
+                                }
                             }
                         }
 
@@ -348,6 +355,8 @@
                         background-color: #5c1d6f;
 
                         &:hover{
+                            transition: all 0.3s ease ;
+                            transform: translateY(-1px);
                             background-color: #7e2998;
                         }
                     }
@@ -464,7 +473,6 @@
 
                 .div-wrapper{
                     width: 85%; 
-                    // overflow: ;
                     margin-bottom: 50px;
                     border-radius: 10px;
                     box-shadow: 0px 0px 15px 5px rgba(0,0,0,0.1);
@@ -521,7 +529,7 @@
                             height: 45px;
                             width: 80%;
                             border: 0;
-                            background-color: #892ea4;
+                            background-color: #5c1d6f;
                             color: #ffffff;
                             font-size: 13px;
         
@@ -714,7 +722,7 @@
                         height: 45px;
                         width: 100%;
                         border-radius: 20px;
-                        border: 1px solid #892ea4;
+                        border: 1px solid #5c1d6f;
                         padding-left: 10px;
                     }
     
@@ -724,7 +732,7 @@
                         font-size: 14px;
                         border-radius: 20px;
                         padding-left: 10px;
-                        border: 1px solid #892ea4;
+                        border: 1px solid #5c1d6f;
                     }
                 }
     
@@ -742,7 +750,7 @@
                             height: 45px;
                             width: 100%;
                             border: 0;
-                            background-color: #892ea4;
+                            background-color: #5c1d6f;
                             color: #ffffff;
                         }
                     }
@@ -754,7 +762,7 @@
                             height: 45px;
                             width: 100%;
                             border: 0;
-                            border: 1px solid #892ea4;
+                            border: 1px solid #5c1d6f;
                             color: #441752;
                         }
                     }

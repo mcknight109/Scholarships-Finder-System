@@ -1,3 +1,22 @@
+<?php
+include '../config.php';
+session_start();
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../login.php");
+    exit();
+}
+
+$user_id = $_SESSION['user_id'];
+$query = "SELECT picture FROM users WHERE id = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$user = $result->fetch_assoc();
+
+$profileImage = !empty($user['picture']) ? $user['picture'] : 'default.png';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -82,7 +101,7 @@
 
                 <div class="prof-img">
                     <a href="stud-profile.php">
-                        <img src="../uploads/scholar3.jpg" alt="profile image">
+                    <img src="../uploads/<?= htmlspecialchars($profileImage) ?>" alt="profile image">
                     </a>
                 </div>
 
@@ -120,7 +139,9 @@
                             <button>Archives</button>
                         </a>
                         <a href="add-user.php">
-                            <button>Create Account</button>
+                            <button>
+                                <i class="fas fa-plus me-2"></i>Create Account
+                            </button>
                         </a>
                     </div>
                 </div>
@@ -141,7 +162,6 @@
                         </thead>
                     <tbody>
                         <?php
-                        include '../config.php';
                         $query = "SELECT * FROM users";
                         $result = $conn->query($query);
                         $count = 1;
@@ -159,7 +179,7 @@
                             <td><?= htmlspecialchars($row['role']) ?></td>
                             <td>
                             <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#editUserModal<?= $row['id'] ?>">
-                                <i class="fas fa-edit">Edit</i>
+                                <i class="fas fa-edit"></i> Edit
                             </button>
                             <button type="button" class="btn btn-sm btn-danger" onclick="deleteUser(<?= $row['id'] ?>)">
                                 <i class="fas fa-trash"></i> Delete
@@ -168,38 +188,48 @@
                         </tr>
 
                         <!-- Edit User Modal -->
-                        <div class="modal fade" id="editUserModal<?= $row['id'] ?>" tabindex="-1">
+                        <div class="modal fade" id="editUserModal<?= $row['id'] ?>" tabindex="-1" aria-hidden="true">
                             <div class="modal-dialog">
-                            <form action="controls/edit_user.php" method="POST">
-                                <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Edit User</h5>
-                                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-                                </div>
-                                <div class="modal-body">
-                                    <input type="hidden" name="id" value="<?= $row['id'] ?>">
-                                    <div class="form-group">
-                                    <label>Name</label>
-                                    <input type="text" name="name" class="form-control" value="<?= htmlspecialchars($row['name']) ?>" required>
+                                <form action="controls/edit_user.php" method="POST" enctype="multipart/form-data">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Edit User</h5>
+                                            <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <input type="hidden" name="id" value="<?= $row['id'] ?>">
+                                            <div class="form-group text-center">
+                                                <img src="../uploads/<?= htmlspecialchars($row['picture']) ?>" alt="Current Picture" width="80" height="80" style="border-radius: 50%; object-fit: cover;">
+                                                <div class="mt-2">
+                                                    <input type="file" name="picture" class="form-control-file">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Name</label>
+                                                <input type="text" name="name" class="form-control" value="<?= htmlspecialchars($row['name']) ?>" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Role</label>
+                                                <select name="role" class="form-control">
+                                                    <option value="student" <?= $row['role'] == 'student' ? 'selected' : '' ?>>Student</option>
+                                                    <option value="admin" <?= $row['role'] == 'admin' ? 'selected' : '' ?>>Admin</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Email</label>
+                                                <input type="email" name="email" class="form-control" value="<?= htmlspecialchars($row['email']) ?>" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Password (leave blank to keep current)</label>
+                                                <input type="password" name="password" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-success">Save Changes</button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                    <label>Email</label>
-                                    <input type="email" name="email" class="form-control" value="<?= htmlspecialchars($row['email']) ?>" required>
-                                    </div>
-                                    <div class="form-group">
-                                    <label>Role</label>
-                                    <select name="role" class="form-control">
-                                        <option value="student" <?= $row['role'] == 'student' ? 'selected' : '' ?>>Student</option>
-                                        <option value="admin" <?= $row['role'] == 'admin' ? 'selected' : '' ?>>Admin</option>
-                                    </select>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-success">Save Changes</button>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                </div>
-                                </div>
-                            </form>
+                                </form>
                             </div>
                         </div>
                         <?php endwhile; ?>
@@ -214,10 +244,10 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- SweetAlert2 JS -->
     <script src="../assets/sweetalert2/sweetalert2.all.min.js"></script>
-    <!-- AdminLTE Scripts -->    
+    <!-- AdminLTE Scripts -->
+    <script src="../assets/AdminLTE/plugins/jquery/jquery.min.js"></script>     
     <script src="../assets/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>    
-    <script src="../assets/AdminLTE/plugins/bootstrap/bootstrap.min.js"></script>
-    <script src="../assets/AdminLTE/plugins/jquery/jquery.min.js"></script>    
+    <!-- <script src="../assets/AdminLTE/plugins/bootstrap/bootstrap.min.js"></script> -->
     <script src="../assets/AdminLTE/dist/js/adminlte.min.js"></script>
     <!-- AdminLTE Table -->
     <script src="../assets/AdminLTE/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>

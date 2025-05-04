@@ -1,8 +1,17 @@
 <?php
+session_start();
 include '../config.php';
 
-include '../config.php';
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../login.php");
+    exit();
+}
 
+$user_id = $_SESSION['user_id'];
+$user_query = mysqli_query($conn, "SELECT * FROM users WHERE id = $user_id LIMIT 1");
+$user = mysqli_fetch_assoc($user_query);
+
+// Existing scholarship filter logic
 $statusFilter = isset($_GET['status']) ? $_GET['status'] : 'all';
 
 if ($statusFilter === 'open' || $statusFilter === 'closed') {
@@ -13,7 +22,6 @@ if ($statusFilter === 'open' || $statusFilter === 'closed') {
 
 $result = mysqli_query($conn, $query);
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -95,7 +103,7 @@ $result = mysqli_query($conn, $query);
 
         <div class="prof-img">
           <a href="stud-profile.php">
-            <img src="../uploads/scholar3.jpg" alt="profile image">
+          <img src="../uploads/<?php echo !empty($user['picture']) ? htmlspecialchars($user['picture']) : 'default.png'; ?>" alt="profile image">
           </a>
         </div>
 
@@ -142,7 +150,9 @@ $result = mysqli_query($conn, $query);
               <button class="btn <?= $currentStatus === 'closed' ? 'active' : '' ?>">Closed</button>
             </a>
             <a href="create-scholar.php">
-              <button class="btn">Create Scholarship</button>
+              <button class="btn">
+                <i class="fas fa-plus me-2"></i>Create Scholarship
+              </button>
             </a>
           </div>
         </div>

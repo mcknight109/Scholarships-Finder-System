@@ -103,7 +103,7 @@ if (isset($_FILES['documents']) && is_array($_FILES['documents']['name']) && !em
         <div class="container">
             <div class="page-header">
                 <h2>Apply for Scholarship: <?php echo htmlspecialchars($scholarship['title']); ?></h2>
-                <a href="home-page.php" class="btn btn-back">
+                <a href="home-page.php" class="btn btn-secondary">
                     <i class="fas fa-arrow-left"></i> Back to Scholarships
                 </a>
             </div>

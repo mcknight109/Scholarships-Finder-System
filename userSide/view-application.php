@@ -32,9 +32,11 @@ $application = $result->fetch_assoc();
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/AdminLTE/plugins/fontawesome-free/css/all.css" />
+    <link rel="stylesheet" href="../assets/AdminLTE/dist/css/adminlte.min.css" />
     <link rel="stylesheet" href="../sweetalert2/sweetalert2.min.css">
     <link rel="stylesheet" href="css/style.scss">
-    <link rel="stylesheet" href="css/temp2.scss">
+    <link rel="stylesheet" href="css/form.scss">
     <title>My Application</title>
     <style>
     </style>
@@ -67,10 +69,12 @@ $application = $result->fetch_assoc();
     <div class="container my-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>Applied Scholarship: <?= htmlspecialchars($application['scholarship_title']) ?></h2>
-            <a href="applications.php" class="btn btn-secondary">Go Back</a>
+                <a href="applications.php" class="btn btn-back">
+                    <i class="fas fa-arrow-left"></i>Go Back
+                </a>
         </div>
 
-        <div class="card shadow-sm mb-4">
+        <div class="card shadow">
             <div class="card-body">
             <?php if ($application): ?>
             <h3 class="mb-3">Application Details</h3>
@@ -79,59 +83,59 @@ $application = $result->fetch_assoc();
             <form>
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label class="form-label">Name</label>
+                        <label class="form-label">Name:</label>
                         <input type="text" class="form-control" value="<?= htmlspecialchars($application['name']) ?>" readonly>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Gender</label>
+                        <label class="form-label">Gender:</label>
                         <input type="text" class="form-control" value="<?= htmlspecialchars($application['gender']) ?>" readonly>
                     </div>
                 </div>
 
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label class="form-label">Age</label>
+                        <label class="form-label">Age:</label>
                         <input type="text" class="form-control" value="<?= htmlspecialchars($application['age']) ?>" readonly>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Contact</label>
+                        <label class="form-label">Contact:</label>
                         <input type="text" class="form-control" value="<?= htmlspecialchars($application['contact']) ?>" readonly>
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Address</label>
+                    <label class="form-label">Address:</label>
                     <input type="text" class="form-control" value="<?= htmlspecialchars($application['address']) ?>" readonly>
                 </div>
 
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label class="form-label">School</label>
+                        <label class="form-label">School:</label>
                         <input type="text" class="form-control" value="<?= htmlspecialchars($application['school']) ?>" readonly>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Grade Level</label>
+                        <label class="form-label">Grade Level:</label>
                         <input type="text" class="form-control" value="<?= htmlspecialchars($application['grade_level']) ?>" readonly>
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Reason for Application</label>
+                    <label class="form-label">Reason for Application:</label>
                     <textarea class="form-control" rows="4" readonly><?= htmlspecialchars($application['reason']) ?></textarea>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Application Status</label>
+                    <label class="form-label">Application Status:</label>
                     <p class="form-control-plaintext">
                         <?= ucfirst(strtolower($application['status'])) ?>
                     </p>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Submitted Document</label><br>
+                    <label class="form-label">Submitted Document:</label><br>
                     <?php if (!empty($application['document'])): ?>
                         <a href="../../uploads/<?= htmlspecialchars($application['document']) ?>" target="_blank" class="btn btn-primary btn-sm mt-2">
-                        View Document
+                            <i class="fas fa-file-alt me-2"></i>View Document
                         </a>
                     <?php else: ?>
                         <p class="text-muted mt-2">No document uploaded.</p>

@@ -2,6 +2,27 @@
 require '../config.php';
 date_default_timezone_set('Asia/Manila');
 
+session_start();
+require '../config.php';
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../login.php");
+    exit();
+}
+
+$userId = $_SESSION['user_id'];
+
+// Fetch the logged-in user's info
+$userQuery = "SELECT name, picture FROM users WHERE id = ?";
+$stmtUser = $conn->prepare($userQuery);
+$stmtUser->bind_param("i", $userId);
+$stmtUser->execute();
+$userResult = $stmtUser->get_result();
+$currentUser = $userResult->fetch_assoc();
+
+$userName = $currentUser['name'] ?? 'Admin';
+$userPicture = $currentUser['picture'] ?? 'default.png'; // fallback if no image uploaded
+
 $yesterday = date('Y-m-d H:i:s', strtotime('-24 hours'));
 $query = "SELECT name, role, last_login FROM users WHERE last_login >= ?";
 $stmt = $conn->prepare($query);
@@ -206,8 +227,8 @@ function timeAgo($datetime) {
                 </div>
 
                 <div class="prof-img">
-                    <a href="stud-profile.php">
-                        <img src="../uploads/scholar3.jpg" alt="profile image">
+                    <a href="stud-profile.php" title="<?= htmlspecialchars($userName) ?>">
+                        <img src="../uploads/<?= htmlspecialchars($userPicture) ?>" alt="Profile Image">
                     </a>
                 </div>
 

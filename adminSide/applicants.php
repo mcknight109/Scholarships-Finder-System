@@ -1,6 +1,22 @@
 <?php
 include '../config.php';
 
+session_start();
+
+$user_id = $_SESSION['user_id'] ?? null;
+$profile_image = '../uploads/default.png'; // fallback default
+
+if ($user_id) {
+    $stmt = $conn->prepare("SELECT picture FROM users WHERE id = ?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $stmt->bind_result($picture);
+    if ($stmt->fetch() && !empty($picture)) {
+        $profile_image = '../uploads/' . $picture;
+    }
+    $stmt->close();
+}
+
 if (isset($_GET['id']) && isset($_GET['update'])) {
     $application_id = $_GET['id'];
 
@@ -119,7 +135,7 @@ if ($filter !== 'all') {
             
                 <div class="prof-img">
                     <a href="stud-profile.php">
-                        <img src="../uploads/scholar3.jpg" alt="profile image">
+                    <img src="<?= htmlspecialchars($profile_image) ?>" alt="profile image">
                     </a>
                 </div>
 

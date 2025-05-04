@@ -1,7 +1,7 @@
 body{
     margin: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Cambria', serif;
 
     header{
         height: 3.125rem;
@@ -46,10 +46,11 @@ body{
 
 
             .prof-img{
-                height: 30px;
-                width: 30px;
+                height: 1.875rem;
+                width: 1.875rem;
                 border-radius: 50%;
                 overflow: hidden;
+                border: 1px solid #441752;
 
                 img{
                     height: 100%;
@@ -141,10 +142,11 @@ body{
             }
 
             .prof-img{
-                height: 30px;
-                width: 30px;
+                height: 1.875rem;
+                width: 1.875rem;
                 border-radius: 50%;
                 overflow: hidden;
+                border: 1px solid #441752;
 
                 img{
                     height: 100%;
@@ -189,7 +191,7 @@ body{
 
 
     .main-sidebar{
-        background-color: #441752;
+        background-color: #5c1d6f;
 
 
         .nav-logo{
@@ -237,7 +239,8 @@ body{
                 }
 
                 &:hover{
-                    background-color: #69227e;
+                    transition: all 0.2s ease;
+                    background-color: #7e2998;
                 }
             }
         }
@@ -287,6 +290,8 @@ body{
 
                 input{
                     border-radius: 10px;
+                    color: #343a40;
+                    border-left: 3px solid #5c1d6f;
                 }
 
 
@@ -297,6 +302,10 @@ body{
                         width: 40px;
                         border-top-right-radius: 10px;
                         border-bottom-right-radius: 10px;
+
+                        i{
+                            color: #441752;
+                        }
                     }
                 }
 
@@ -312,12 +321,16 @@ body{
                         border-radius: 20px;
                         height: 35px;
                         width: 100%;
-                        padding: 0px 18px;
+                        padding: 0px 15px;
                         border: 0;
                         font-size: 12px;
                         border: 1px solid #5c1d6f;
                         color: #69227e;
                         transition: box-shadow 0.3s ease;
+
+                        i{
+                            margin-right: 3px;
+                        }
     
                         &:hover{
                             box-shadow: 0px 3px 5px 1px rgba(0,0,0,0.5);
@@ -396,7 +409,7 @@ body{
                     }
     
                     .card-header{
-                        background-color: #69227e;
+                        background-color: #5c1d6f;
                     }
 
                     .card{
@@ -412,7 +425,7 @@ body{
                 font-size: 12px;
         
                 .card-header{
-                    background-color: #69227e;
+                    background-color: #5c1d6f;
                 }
 
                 .card{
