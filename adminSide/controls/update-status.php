@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Execute the query and check if the update was successful
         if ($stmt->execute()) {
             // Redirect back to the view-application page after updating
-            header("Location: view-application.php?id=$application_id");
+            header("Location: ../view-application.php?id=$application_id");
             exit(); // Ensure no further code is executed
         } else {
             // Handle error

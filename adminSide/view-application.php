@@ -53,6 +53,7 @@ if (isset($_GET['id'])) {
     <link rel="stylesheet" href="../assets/AdminLTE/plugins/fontawesome-free/css/all.css">
     <link rel="stylesheet" href="../assets/AdminLTE/dist/css/adminlte.min.css">
     <link rel="stylesheet" href="css/style.scss">
+    <link rel="stylesheet" href="css/form.scss">
     <title>Document</title>
 </head>
 <body>
@@ -76,17 +77,17 @@ if (isset($_GET['id'])) {
     </div>
 </header>
     <div class="viewApp">
-        <div class="container my-5">
-            <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="container my-3">
+            <div class="d-flex justify-content-between align-items-center mb-3">
                 <h2>View Application</h2>
                 <a href="applicants.php" class="btn btn-back">
                     <i class="fas fa-arrow-left"></i>Go Back
                 </a>
             </div>
             <?php if ($application): ?>
-                <div class="card shadow-sm">
+                <div class="card shadow">
                     <div class="card-body">
-                        <div class="card-header bg-primary text-white">
+                        <div class="card-header">
                             <h5 class="mb-0">Application Details</h5>
                         </div>
                         <div class="card-body">
@@ -109,7 +110,8 @@ if (isset($_GET['id'])) {
                             <div class="mb-3">
                                 <strong>Uploaded Document:</strong><br>
                                 <?php if (!empty($application['document'])): ?>
-                                    <a href="./viewer/viewer.php?file=<?= urlencode($application['document']) ?>" class="btn btn-sm btn-outline-primary mt-2">View Document</a>
+                                    <!-- <a href="./viewer/viewer.php?file=<?= urlencode($application['document']) ?>" class="btn btn-sm btn-outline-primary mt-2">View Document</a> -->
+                                    <a href="./viewer/viewer-doc.php?file=<?= urlencode($application['document']) ?>" class="btn btn-sm btn-outline-primary mt-2">View Document</a>
                                 <?php else: ?>
                                     <p class="text-muted">No document uploaded.</p>
                                 <?php endif; ?>
@@ -131,17 +133,21 @@ if (isset($_GET['id'])) {
                             </div>
 
                             <?php if ($application['status'] == 'reviewed' || $application['status'] == 'pending'): ?>
-                                <div class="d-flex gap-5 mt-4">
-                                    <form action="update-status.php" method="POST">
+                                <div class="d-flex justify-content-between mt-4">
+                                    <form action="controls/update-status.php" method="POST">
                                         <input type="hidden" name="id" value="<?= $application['id'] ?>">
                                         <input type="hidden" name="status" value="approved">
-                                        <button type="submit" class="btn btn-success">Approve</button>
+                                        <button type="submit" class="btn btn-success">
+                                            <i class="fas fa-check me-2"></i> Approve
+                                        </button>
                                     </form>
 
-                                    <form action="update-status.php" method="POST">
+                                    <form action="controls/update-status.php" method="POST">
                                         <input type="hidden" name="id" value="<?= $application['id'] ?>">
                                         <input type="hidden" name="status" value="rejected">
-                                        <button type="submit" class="btn btn-danger">Reject</button>
+                                        <button type="submit" class="btn btn-danger">
+                                            <i class="fas fa-times me-2"></i> Reject
+                                        </button>
                                     </form>
                                 </div>
                             <?php endif; ?>

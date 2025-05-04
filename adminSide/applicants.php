@@ -68,7 +68,7 @@ if ($filter !== 'all') {
     
     <div class="wrapper">
         <!-- Sidebar -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <aside class="main-sidebar sidebar-dark-primary elevation-3">
             <div class="nav-logo" href="admin-dashboard.php">
                 <i class="fas fa-user-shield mr-1 text-white"></i>
                 <span>WELCOME ADMIN</span>
@@ -104,13 +104,13 @@ if ($filter !== 'all') {
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-light fa-bell"></i>
-                                <p onclick="alert('Settings function will be implemented soon.')">Notifications</p>
+                                <p onclick="alert('Notifications function will be implemented soon.')" style="text-decoration: line-through;">Notifications</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-cog"></i>
-                                <p onclick="alert('Settings function will be implemented soon.')">Settings</p>
+                                <p onclick="alert('Settings function will be implemented soon.')" style="text-decoration: line-through;">Settings</p>
                             </a>
                         </li>
                     </ul>

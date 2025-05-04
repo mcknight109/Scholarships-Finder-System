@@ -34,7 +34,7 @@ $profileImage = !empty($user['picture']) ? $user['picture'] : 'default.png';
 <body>
     <div class="wrapper">
         <!-- Sidebar -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <aside class="main-sidebar sidebar-dark-primary elevation-3">
             <div class="nav-logo" href="admin-dashboard.php">
                 <i class="fas fa-user-shield mr-1 text-white"></i>
                 <span>WELCOME ADMIN</span>
@@ -70,13 +70,13 @@ $profileImage = !empty($user['picture']) ? $user['picture'] : 'default.png';
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-light fa-bell"></i>
-                                <p onclick="alert('Settings function will be implemented soon.')">Notifications</p>
+                                <p onclick="alert('Notifications function will be implemented soon.')" style="text-decoration: line-through;">Notifications</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-cog"></i>
-                                <p onclick="alert('Settings function will be implemented soon.')">Settings</p>
+                                <p onclick="alert('Settings function will be implemented soon.')" style="text-decoration: line-through;">Settings</p>
                             </a>
                         </li>
                     </ul>
@@ -178,10 +178,10 @@ $profileImage = !empty($user['picture']) ? $user['picture'] : 'default.png';
                             <td><?= htmlspecialchars($row['gender']) ?></td>
                             <td><?= htmlspecialchars($row['role']) ?></td>
                             <td>
-                            <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#editUserModal<?= $row['id'] ?>">
+                            <button type="button" class="btn btn-sm btn-outline-info" data-toggle="modal" data-target="#editUserModal<?= $row['id'] ?>">
                                 <i class="fas fa-edit"></i> Edit
                             </button>
-                            <button type="button" class="btn btn-sm btn-danger" onclick="deleteUser(<?= $row['id'] ?>)">
+                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteUser(<?= $row['id'] ?>)">
                                 <i class="fas fa-trash"></i> Delete
                             </button>
                             </td>
@@ -250,11 +250,10 @@ $profileImage = !empty($user['picture']) ? $user['picture'] : 'default.png';
     <!-- <script src="../assets/AdminLTE/plugins/bootstrap/bootstrap.min.js"></script> -->
     <script src="../assets/AdminLTE/dist/js/adminlte.min.js"></script>
     <!-- AdminLTE Table -->
+    <script src="../assets/AdminLTE/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="../assets/AdminLTE/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
     <script src="../assets/AdminLTE/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-    <script src="../assets/AdminLTE/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>    
-    <script src="../assets/AdminLTE/plugins/datatables/jquery.dataTables.min.js"></script>
-    
+    <script src="../assets/AdminLTE/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 
     <script>
         $(document).ready(function() {
@@ -291,13 +290,13 @@ $profileImage = !empty($user['picture']) ? $user['picture'] : 'default.png';
                 confirmButtonText: 'Yes, delete it!',
                 cancelButtonText: 'No, cancel!',
                 width: 330,
-                customClass: {
-                popup: 'custom-swal-popup',
-                title: 'custom-swal-title',
-                htmlContainer: 'custom-swal-text',
-                icon: 'custom-swal-icon',
-                confirmButton: 'custom-swal-btn',
-                cancelButton: 'custom-swal-cancel'
+                    customClass: {
+                    popup: 'custom-swal-popup',
+                    title: 'custom-swal-title',
+                    htmlContainer: 'custom-swal-text',
+                    icon: 'custom-swal-icon',
+                    confirmButton: 'custom-swal-btn',
+                    cancelButton: 'custom-swal-cancel'
                 }
             }).then((result) => {
                 if (result.isConfirmed) {

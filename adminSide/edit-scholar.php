@@ -79,10 +79,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="../AdminLTE/plugins/fontawesome-free/css/all.css">
-  <link rel="stylesheet" href="../AdminLTE/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="../assets/AdminLTE/plugins/fontawesome-free/css/all.css">
+  <link rel="stylesheet" href="../assets/AdminLTE/dist/css/adminlte.min.css">
   <link rel="stylesheet" href="css/style.scss">
   <link rel="stylesheet" href="css/form.scss">
+  <link rel="stylesheet" href="../alert.scss">
   <title>Edit Scholarship</title>
 </head>
 <body>
@@ -114,6 +115,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       </div>
       <div class="card shadow">
         <div class="card-body">
+        <p class="text-muted mb-4">Complete the form below to edit the scholarship.</p>
           <?php if ($message): ?>
             <div class="alert alert-info"><?= $message ?></div>
           <?php endif; ?>
@@ -159,18 +161,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
 
             <div class="d-flex justify-content-end">
-              <button type="submit" class="btn btn-primary">Update Scholarship</button>
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-edit me-1"></i>Update Scholarship
+              </button>
             </div>
           </form>
         </div>
       </div>
     </div>
   </div>
-  <!-- Bootstrap 5 -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <!-- SweetAlert2 JS -->
   <script src="../assets/sweetalert2/sweetalert2.all.min.js"></script>
-  <!-- AdminLTE Scripts -->    
+  <script>
+    <?php if ($message): ?>
+      const success = <?= json_encode($message === "Scholarship updated successfully!") ?>;
+      const message = <?= json_encode($message) ?>;
+
+      Swal.fire({
+        icon: success ? 'success' : 'error',
+        title: success ? 'Success!' : 'Error!',
+        text: message,
+        confirmButtonColor: '',
+        confirmButtonText: 'OK',
+        width: 330,
+          customClass: {
+            popup: 'custom-swal-popup',
+            title: 'custom-swal-title',
+            htmlContainer: 'custom-swal-text',
+            icon: 'custom-swal-icon',
+            confirmButton: 'custom-swal-btn',
+            cancelButton: 'custom-swal-cancel'
+          }
+      }).then(() => {
+        if (success) {
+          window.location.href = 'scholarships.php';  // Redirect after success
+        }
+      });
+    <?php endif; ?>
+  </script>
+
+  <!-- Bootstrap 5 -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="../assets/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>    
   <script src="../assets/AdminLTE/plugins/bootstrap/bootstrap.min.js"></script>
   <script src="../assets/AdminLTE/plugins/jquery/jquery.min.js"></script>    

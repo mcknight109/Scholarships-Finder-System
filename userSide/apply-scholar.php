@@ -76,6 +76,7 @@ if (isset($_FILES['documents']) && is_array($_FILES['documents']['name']) && !em
   <link rel="stylesheet" href="../assets/AdminLTE/dist/css/adminlte.min.css" />
   <link rel="stylesheet" href="css/style.scss">
   <link rel="stylesheet" href="css/temp.scss">
+  <link rel="stylesheet" href="../alert.scss">
   <title>Apply for Scholarship</title>
 </head>
 <body>
@@ -103,7 +104,7 @@ if (isset($_FILES['documents']) && is_array($_FILES['documents']['name']) && !em
         <div class="container">
             <div class="page-header">
                 <h2>Apply for Scholarship: <?php echo htmlspecialchars($scholarship['title']); ?></h2>
-                <a href="home-page.php" class="btn btn-secondary">
+                <a href="home-page.php" class="btn btn-back">
                     <i class="fas fa-arrow-left"></i> Back to Scholarships
                 </a>
             </div>

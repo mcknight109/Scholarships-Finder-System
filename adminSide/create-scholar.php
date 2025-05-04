@@ -44,7 +44,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bind_param("ssssss", $title, $description, $eligibility, $deadline, $imageName, $status);
 
     if ($stmt->execute()) {
-        $message = "Scholarship created successfully!";
+      $success = true;
+      $message = "Scholarship created successfully!";
     } else {
         $message = "Error: " . $stmt->error;
     }
@@ -63,6 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="css/style.scss">
   <link rel="stylesheet" href="css/form.scss">
+  <link rel="stylesheet" href="../alert.scss">
 </head>
 <body>
   <header>
@@ -72,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="nav-side">
       <div class="prof-img">
         <a href="stud-profile.php">
-        <img src="../uploads/<?= htmlspecialchars($profileImage) ?>" alt="profile image">
+          <img src="../uploads/<?= htmlspecialchars($profileImage) ?>" alt="profile image">
         </a>
       </div>
       <div class="logout-btn">
@@ -93,7 +95,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
       <div class="card shadow">
         <div class="card-body">
-          <!-- <h3 class="mb-3">Create a New Scholarship</h3> -->
           <p class="text-muted mb-4">Complete the form below to add a new scholarship opportunity.</p>
           <?php if ($message): ?>
             <div class="alert alert-info"><?= $message ?></div>
@@ -157,5 +158,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <script src="../assets/AdminLTE/plugins/bootstrap/bootstrap.min.js"></script>
   <script src="../assets/AdminLTE/plugins/jquery/jquery.min.js"></script>    
   <script src="../assets/AdminLTE/dist/js/adminlte.min.js"></script>
+
+  <script>
+    const success = <?= $success ? 'true' : 'false' ?>;
+    const message = <?= json_encode($message) ?>;
+
+    if (message) {
+        Swal.fire({
+            icon: success ? 'success' : 'error',
+            title: success ? 'Success!' : 'Error!',
+            text: message,
+            confirmButtonColor: '',
+            confirmButtonText: 'OK',
+            width: 330,
+            customClass: {
+                popup: 'custom-swal-popup',
+                title: 'custom-swal-title',
+                htmlContainer: 'custom-swal-text',
+                icon: 'custom-swal-icon',
+                confirmButton: 'custom-swal-btn',
+                cancelButton: 'custom-swal-cancel'
+            }
+        }).then(() => {
+            if (success) {
+                window.location.href = 'scholarships.php';
+            }
+        });
+    }
+  </script>
+
 </body>
 </html>

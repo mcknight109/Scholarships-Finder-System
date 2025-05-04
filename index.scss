@@ -168,13 +168,14 @@
                             height: 45px;
                             width: 100%;
                             border: 0;
-                            background-color: #892ea4;
+                            background-color: #5c1d6f;
                             color: #ffffff;
                             letter-spacing: 1px;
 
                             &:hover{
-                                background-color: #5c1d6f;
-                                box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.2);
+                                transition: all 0.3s ease;
+                                background-color: #7e2998;
+                                box-shadow: 0px 3px 5px 1px rgba(0,0,0,0.5);
                             }
                         }
                     }
@@ -210,14 +211,15 @@
                             height: 45px;
                             width: 100%;
                             border: 0;
-                            border: 1px solid #892ea4;
+                            border: 1px solid #5c1d6f;
                             background-color: transparent;
                             color: #000000;
                             letter-spacing: 1px;
 
                             &:hover{
-                                border: 1px solid #441752;
-                                box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.2);
+                                border: 1px solid #7e2998;
+                                transition: all 0.3s ease;
+                                box-shadow: 0px 3px 5px 1px rgba(0,0,0,0.5);
                             }
                         }
                     }

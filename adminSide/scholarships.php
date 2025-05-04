@@ -1,6 +1,11 @@
 <?php
 session_start();
 include '../config.php';
+date_default_timezone_set('Asia/Manila');
+
+// Auto-update status to 'closed' if deadline has passed
+$today = date('Y-m-d');
+mysqli_query($conn, "UPDATE scholarships SET status = 'closed' WHERE deadline < '$today' AND status != 'closed'");
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../login.php");
@@ -37,7 +42,7 @@ $result = mysqli_query($conn, $query);
 <body>
   <div class="wrapper">
     <!-- Sidebar -->
-    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <aside class="main-sidebar sidebar-dark-primary elevation-3">
       <div class="nav-logo" href="admin-dashboard.php">
         <i class="fas fa-user-shield mr-1 text-white"></i>
         <span>WELCOME ADMIN</span>
@@ -73,13 +78,13 @@ $result = mysqli_query($conn, $query);
             <li class="nav-item">
               <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-light fa-bell"></i>
-                <p onclick="alert('Settings function will be implemented soon.')">Notifications</p>
+                <p onclick="alert('Notifications function will be implemented soon.')" style="text-decoration: line-through;">Notifications</p>
               </a>
             </li>
             <li class="nav-item">
               <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-cog"></i>
-                <p onclick="alert('Settings function will be implemented soon.')">Settings</p>
+                <p onclick="alert('Settings function will be implemented soon.')" style="text-decoration: line-through;">Settings</p>
               </a>
             </li>
           </ul>
@@ -184,13 +189,19 @@ $result = mysqli_query($conn, $query);
                       <div class="deadline">
                         <p><strong>Deadline:</strong> <?php echo date('F, d, Y', strtotime($row['deadline'])); ?></p>
                       </div>
+                      <?php
+                        $status = $row['status'];
+                        $statusColor = ($status === 'open') ? 'badge-success' : 'badge-danger';
+                      ?>
                       <div class="status">
-                        <p><strong>Status:</strong> <?php echo ucfirst($row['status']); ?></p>
+                        <p><strong>Status:</strong> <span class="badge <?= $statusColor ?>"><?= ucfirst($status); ?></span></p>
                       </div>
                       <div>
-                        <a href="edit-scholar.php?id=<?= $row['id'] ?>" class="btn btn-primary btn-sm">Edit</a>
-                        <button type="button" class="btn btn-outline-light btn-sm" onclick="deleteScholar(<?= $row['id'] ?>)">
-                          <i class="fas fa-trash-alt"></i> Delete
+                        <a href="edit-scholar.php?id=<?= $row['id'] ?>" class="btn btn-outline-info btn-sm">
+                          <i class="fas fa-edit me-1"></i> Edit
+                        </a>
+                        <button type="button" class="btn btn-outline-danger btn-sm" onclick="deleteScholar(<?= $row['id'] ?>)">
+                          <i class="fas fa-trash-alt me-1"></i> Delete
                         </button>
                       </div>
                     </div>

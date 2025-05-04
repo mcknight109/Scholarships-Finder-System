@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // File upload handling
     if (isset($_FILES['picture']) && $_FILES['picture']['error'] === UPLOAD_ERR_OK) {
-        $uploadDir = "../../uploads/";
+        $uploadDir = "../uploads/";
         $filename = basename($_FILES['picture']['name']);
         $targetPath = $uploadDir . $filename;
 
@@ -46,6 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($stmt->execute()) {
             $message = "User account created successfully!";
+            $success = true;
         } else {
             $message = "Error: " . $stmt->error;
         }
@@ -62,6 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../assets/AdminLTE/dist/css/adminlte.min.css">
     <link rel="stylesheet" href="css/style.scss">
     <link rel="stylesheet" href="css/form.scss">
+    <link rel="stylesheet" href="../alert.scss">
     <title>Add User</title>
 </head>
 <body>
@@ -93,14 +95,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
            <div class="card shadow">
                 <div class="card-body">
+                <p class="text-muted mb-4">Complete the form below to create a new Account.</p>
                 <?php if ($message): ?>
                     <div class="alert alert-info"><?= $message ?></div>
                 <?php endif; ?>
-                <form action="add_user.php" method="POST" enctype="multipart/form-data">
+                <form action="add-user.php" method="POST" enctype="multipart/form-data">
 
                     <div class="mb-3">
                         <label for="name" class="form-label">Full Name</label>
-                        <input type="text" class="form-control" name="name" id="name" required>
+                        <input type="text" class="form-control" name="name" id="name" required placeholder="Enter the full name">
                     </div>
 
                     <div class="mb-3">
@@ -128,12 +131,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <div class="mb-3">
                         <label for="email" class="form-label">Email Address</label>
-                        <input type="email" class="form-control" name="email" id="email" required>
+                        <input type="email" class="form-control" name="email" id="email" required placeholder="Enter the email address">
                     </div>
 
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" name="password" id="password" required>
+                        <input type="password" class="form-control" name="password" id="password" required placeholder="Enter the password">
                     </div>
 
                     <div class="d-flex justify-content-end">
@@ -156,5 +159,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script src="../assets/AdminLTE/plugins/bootstrap/bootstrap.min.js"></script>
     <script src="../assets/AdminLTE/plugins/jquery/jquery.min.js"></script>    
     <script src="../assets/AdminLTE/dist/js/adminlte.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const success = <?= isset($success) && $success ? 'true' : 'false' ?>;
+
+            if (success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'User account created successfully!',
+                    confirmButtonColor: '',
+                    confirmButtonText: 'OK',
+                    width: 330,
+                        customClass: {
+                        popup: 'custom-swal-popup',
+                        title: 'custom-swal-title',
+                        htmlContainer: 'custom-swal-text',
+                        icon: 'custom-swal-icon',
+                        confirmButton: 'custom-swal-btn',
+                        cancelButton: 'custom-swal-cancel'
+                        }
+                }).then(() => {
+                    window.location.href = 'manage-users.php'; // redirect after confirmation
+                });
+            }
+        });
+    </script>
 </html>
 </body>

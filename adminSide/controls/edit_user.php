@@ -30,7 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $sql = "UPDATE users SET name='$name', email='$email', role='$role' $updatePicture $updatePassword WHERE id=$id";
 
     if ($conn->query($sql) === TRUE) {
-        header("Location: ../manage-users.php?msg=updated");
+        header("Location: ../manage-users.php?update=success");
+        exit();
     } else {
         echo "Error updating user: " . $conn->error;
     }
