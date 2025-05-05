@@ -394,7 +394,6 @@ body{
         
             .con-1{
                 padding: 0rem 0.625rem ;
-                height: 79vh;
                 width: 70%;
                 font-size: 13px;
         
@@ -402,35 +401,37 @@ body{
                     flex: 0 0 100%;
                     padding: 0;
                     max-width: 100%;
-        
-                    canvas{
-                        height: 180px; 
-                        width: 100%; 
-                        margin: auto;
-                    }
-    
-                    .card-header{
-                        background-color: #5c1d6f;
-                    }
 
                     .card{
-                        height: 418px;
+                        height: 100%;
+                        margin: 0;
+
+                        .card-header{
+                            background-color: #5c1d6f;
+                        }
+                        .card-body{
+                            
+                        }
                     }
                 }
             }
         
             .con-2{
                 padding-right:0.625rem ;
-                height: 79vh;
                 width: 30%;
                 font-size: 12px;
         
-                .card-header{
-                    background-color: #5c1d6f;
-                }
-
                 .card{
+                    margin: 0;
                     height: 100%;
+
+                    .card-header{
+                        background-color: #5c1d6f;
+                    }
+
+                    .card-body{
+                        height: 100%;
+                    }
                 }
             }
         }        

@@ -50,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <form action="reset-password.php" method="POST">
                     <div class="login-header">
                         <h2>Reset Password</h2>
-                        <p><?= htmlspecialchars($message ?? '') ?></p>
+                        <p style="color: red; font-weight:bold;"><?= htmlspecialchars($message ?? '') ?></p>
                     </div>
                     <div class="login-input">
                         <label for="">New Password:</label><br>

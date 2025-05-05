@@ -79,7 +79,7 @@ $updateLogin->execute();
                 <form action="login.php" method="POST">
                     <div class="login-header">
                         <h2>Login your account</h2>
-                        <p><?php echo isset($error) ? htmlspecialchars($error) : ''; ?></p>
+                        <p style="color: red; font-weight:bold;"><?php echo isset($error) ? htmlspecialchars($error) : ''; ?></p>
                     </div>
                     <div class="login-input">
                         <label for="">Email:</label><br>

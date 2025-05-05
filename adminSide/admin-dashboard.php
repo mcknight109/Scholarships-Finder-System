@@ -294,7 +294,7 @@ function timeAgo($datetime) {
                                 <h3 class="card-title"><i class="fas fa-chart-bar"></i> Applications per Scholarship (Monthly 2025)</h3>
                             </div>
                             <div class="card-body">
-                                <canvas id="applicationsBarChart" style="height: 300px;"></canvas>
+                                <canvas id="applicationsBarChart"></canvas>
                             </div>
                         </div>
                     </div>
@@ -305,7 +305,7 @@ function timeAgo($datetime) {
                         <div class="card-header">
                             <h3 class="card-title"><i class="fas fa-clock"></i> Users Logged In Today</h3>
                         </div>
-                        <div class="card-body table-responsive p-0" style="max-height: 100%">
+                        <div class="card-body table-responsive p-0">
                             <table class="table table-hover text-nowrap">
                                 <thead>
                                     <tr>

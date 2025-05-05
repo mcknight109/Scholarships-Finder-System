@@ -58,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <form action="register.php" method="POST">
                     <div class="login-header">
                         <h2>Create your Account</h2>
-                        <p><?php echo isset($error) ? htmlspecialchars($error) : ''; ?></p>
+                        <p style="color: red; font-weight:bold;"><?php echo isset($error) ? htmlspecialchars($error) : ''; ?></p>
                     </div>
                     <div class="login-input">
                         <label>Name:</label><br>

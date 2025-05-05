@@ -112,7 +112,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <form action="forget-password.php" method="POST">
                     <div class="login-header">
                         <h2>Forget Password</h2>
-                        <p><?= $message ?></p>
+                        <p style="color: red; font-weight:bold;"><?= $message ?></p>
                     </div>
                     <div class="login-input">
                         <label for="">Email:</label><br>
@@ -132,7 +132,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <polyline points="22,6 12,13 2,6"/>
                             </svg>
                         </i>
-                        <input type="text" name="otp">
+                        <input type="text" name="otp" placeholder="Enter the OTP sent to your email">
                     </div>
                     <div class="login-btn">
                         <button type="submit" name="send_email">Send email</button>

@@ -97,10 +97,10 @@ $applied_count = $app_count_row['applied_count'];
               </a>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-bell"></i>
-                <p onclick="alert('Notifications function will be implemented soon.')" style="text-decoration: line-through;">Notifications</p>
-              </a>
+                <a href="notifications.php" class="nav-link">
+                  <i class="nav-icon fas fa-bell"></i>
+                  <p>Notifications</p>
+                </a>
             </li>
             <li class="nav-item">
               <a href="#" class="nav-link">
