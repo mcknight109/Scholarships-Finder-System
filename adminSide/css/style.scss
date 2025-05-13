@@ -277,7 +277,7 @@ body{
 
 
         
-        .content{
+        .content, .notiContent{
             
             .tableH, .scholar-head{
                 display: flex;
@@ -358,24 +358,28 @@ body{
 
 
 
+            .card{
+                margin: 0;
 
-            table {
+                table {
 
-                thead{
-                    font-size: 12px;
-                    background-color: #5c1d6f;
-                    color: #ffffff;
-
-                }
-
-                tbody{
-                    
-                    td, th{
-                        font-size: 13px;
-                        vertical-align: middle;
+                    thead{
+                        font-size: 12px;
+                        background-color: #5c1d6f;
+                        color: #ffffff;
+    
+                    }
+    
+                    tbody{
+                        
+                        td, th{
+                            font-size: 13px;
+                            vertical-align: middle;
+                        }
                     }
                 }
             }
+            
             
             
             .table-spaced {
@@ -410,7 +414,7 @@ body{
                             background-color: #5c1d6f;
                         }
                         .card-body{
-                            
+                            height: 100%;
                         }
                     }
                 }

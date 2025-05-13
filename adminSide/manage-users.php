@@ -135,9 +135,9 @@ $profileImage = !empty($user['picture']) ? $user['picture'] : 'default.png';
                         </div>
                     </form>
                     <div class="sideHeader">
-                        <a href="">
+                        <!-- <a href="">
                             <button>Archives</button>
-                        </a>
+                        </a> -->
                         <a href="add-user.php">
                             <button>
                                 <i class="fas fa-plus me-2"></i>Create Account
@@ -178,9 +178,9 @@ $profileImage = !empty($user['picture']) ? $user['picture'] : 'default.png';
                             <td><?= htmlspecialchars($row['gender']) ?></td>
                             <td><?= htmlspecialchars($row['role']) ?></td>
                             <td>
-                            <button type="button" class="btn btn-sm btn-outline-info" data-toggle="modal" data-target="#editUserModal<?= $row['id'] ?>">
+                            <!-- <button type="button" class="btn btn-sm btn-outline-info" data-toggle="modal" data-target="#editUserModal<?= $row['id'] ?>">
                                 <i class="fas fa-edit"></i> Edit
-                            </button>
+                            </button> -->
                             <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteUser(<?= $row['id'] ?>)">
                                 <i class="fas fa-trash"></i> Delete
                             </button>

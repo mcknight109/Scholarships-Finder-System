@@ -122,7 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <polyline points="22,6 12,13 2,6"/>
                             </svg>
                         </i>
-                        <input type="email" name="email" value="<?= htmlspecialchars($enteredEmail)?>" placeholder="Enter your email">
+                        <input type="email" name="email" value="<?= htmlspecialchars($enteredEmail)?>" placeholder="Enter your email" maxlength="30">
                     </div>
                     <div class="login-input">
                         <label for="">OTP:</label><br>
@@ -132,7 +132,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <polyline points="22,6 12,13 2,6"/>
                             </svg>
                         </i>
-                        <input type="text" name="otp" placeholder="Enter the OTP sent to your email">
+                        <input type="text" name="otp" placeholder="Enter the OTP sent to your email" maxlength="6">
                     </div>
                     <div class="login-btn">
                         <button type="submit" name="send_email">Send email</button>

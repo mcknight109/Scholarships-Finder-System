@@ -53,6 +53,14 @@ $app_count_stmt->execute();
 $app_count_result = $app_count_stmt->get_result();
 $app_count_row = $app_count_result->fetch_assoc();
 $applied_count = $app_count_row['applied_count'];
+
+// Count approved applications for notification
+$notif_stmt = $conn->prepare("SELECT COUNT(*) AS notif_count FROM applications WHERE user_id = ? AND status = 'approved'");
+$notif_stmt->bind_param("i", $user_id);
+$notif_stmt->execute();
+$notif_result = $notif_stmt->get_result();
+$notif_row = $notif_result->fetch_assoc();
+$notif_count = $notif_row['notif_count'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -123,10 +131,22 @@ $applied_count = $app_count_row['applied_count'];
         </li>
       </ul>
       <div class="nav-side">
-        <div class="noti">
+        <div class="noti dropdown">
           <a class="nav-link" data-toggle="dropdown" href="#">
             <i class="far fa-bell"></i>
+            <?php if ($notif_count > 0): ?>
+              <span class="badge badge-danger navbar-badge"><?php echo $notif_count; ?></span>
+            <?php endif; ?>
           </a>
+          <div class="dropdown-menu dropdown-menu-right">
+            <?php if ($notif_count > 0): ?>
+              <a href="notifications.php" class="dropdown-item">
+                <i class="fas fa-check-circle mr-2 text-success"></i> You have <?php echo $notif_count; ?> approved application<?php echo $notif_count > 1 ? 's' : ''; ?>
+              </a>
+            <?php else: ?>
+              <span class="dropdown-item text-muted">No new notifications</span>
+            <?php endif; ?>
+          </div>
         </div>
         <div class="prof-img">
           <a href="profile.php">
@@ -193,18 +213,30 @@ $applied_count = $app_count_row['applied_count'];
               </div>
               <div class="deadline">
                 <span>DEADLINE:</span><br> 
-                <p><?php echo htmlspecialchars($row['deadline']); ?></p>
+                <p><?php echo date("F j, Y", strtotime($row['deadline'])); ?></p>
               </div>
               <div class="status">
                 <span>STATUS:</span><br> 
-                <p><?php echo ucfirst($row['status']); ?></p>
+                <p
+                  <?php 
+                    if ($row['status'] === "open") {
+                      echo "style='color: green'";
+                    } else {
+                      echo "style='color: gray'";
+                    }
+                  ?>
+                >
+                  <?php echo ucfirst($row['status']); ?>
+                </?>
               </div>
               <div class="apply-btn">
-                <?php if (in_array($row['id'], $applied_ids)): ?>
-                  <button disabled style="background-color: gray; cursor: not-allowed;">Applied</button>
-                <?php else: ?>
-                  <button onclick="confirmApply(<?php echo $row['id']; ?>)">Apply Now</button>
-                <?php endif; ?>
+              <?php if (in_array($row['id'], $applied_ids)): ?>
+                <button disabled style="background-color: gray; cursor: not-allowed;">Applied</button>
+              <?php elseif ($row['status'] === 'closed'): ?>
+                <button disabled style="background-color: gray; cursor: not-allowed;">Closed</button>
+              <?php else: ?>
+                <button onclick="confirmApply(<?php echo $row['id']; ?>)">Apply Now</button>
+              <?php endif; ?>
               </div>
             </div>
           <?php endwhile; ?>
@@ -236,6 +268,10 @@ $applied_count = $app_count_row['applied_count'];
     </div>
   </div>
 
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Bootstrap Bundle (includes Popper) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
   <!-- Bootstrap 5 -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <!-- SweetAlert2 JS -->

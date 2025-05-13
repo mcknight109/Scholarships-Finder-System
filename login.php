@@ -89,7 +89,7 @@ $updateLogin->execute();
                                 <polyline points="22,6 12,13 2,6"/>
                             </svg>
                         </i>
-                        <input type="email" name="email" placeholder="Enter your email" required>
+                        <input type="email" name="email" placeholder="Enter your email" maxlength="30" required>
                     </div>
                     <div class="login-input">
                         <label for="">Password:</label><br>
@@ -99,7 +99,7 @@ $updateLogin->execute();
                                 <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
                             </svg>
                         </i>
-                        <input type="password" name="password" placeholder="Enter your password" required>
+                        <input type="password" name="password" placeholder="Enter your password" maxlength="30" required>
                     </div>
                     <div class="forget">
                         <a href="forget-password.php">Forget password?</a>

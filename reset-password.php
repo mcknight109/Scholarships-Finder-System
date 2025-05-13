@@ -60,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
                             </svg>
                         </i>
-                        <input type="password" name="new_password" placeholder="Enter your new password">
+                        <input type="password" name="new_password" placeholder="Enter your new password" max="30">
                     </div>
                     <div class="login-input">
                         <label for="">Confirm Password:</label><br>
@@ -70,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
                             </svg>
                         </i>
-                        <input type="password" name="confirm_password" placeholder="Confirm your new password">
+                        <input type="password" name="confirm_password" placeholder="Confirm your new password" max="30">
                     </div>
                     <div class="login-btn">
                         <button type="submit">Confirm</button>

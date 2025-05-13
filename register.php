@@ -67,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
                                 <circle cx="12" cy="7" r="4"/></svg>
                         </i>
-                        <input type="text" name="name" placeholder="Enter your name" required>
+                        <input type="text" name="name" placeholder="Enter your name" maxlength="30" required>
                     </div>
                     <div class="login-input">
                         <label>Email:</label><br>
@@ -77,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <polyline points="22,6 12,13 2,6"/>
                             </svg>
                         </i>
-                        <input type="email" name="email" placeholder="Enter your email" required>
+                        <input type="email" name="email" placeholder="Enter your email" maxlength="30" required>
                     </div>
                     <div class="login-input">
                         <label>Password:</label><br>
@@ -87,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
                             </svg>
                         </i>
-                        <input type="password" name="password" placeholder="Enter your password" required>
+                        <input type="password" name="password" placeholder="Enter your password" min="8" maxlength="30" required>
                     </div>
                     <div class="login-input">
                         <label>Confirm Password:</label><br>
@@ -97,7 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
                             </svg>
                         </i>
-                        <input type="password" name="confirm_password" placeholder="Confirm your password" required>
+                        <input type="password" name="confirm_password" placeholder="Confirm your password" min="8" maxlength="30" required>
                     </div>
                     <div class="login-btn">
                         <button type="submit">Create account</button>

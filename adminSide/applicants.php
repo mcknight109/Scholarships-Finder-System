@@ -102,9 +102,9 @@ if ($filter !== 'all') {
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-light fa-bell"></i>
-                                <p onclick="alert('Notifications function will be implemented soon.')" style="text-decoration: line-through;">Notifications</p>
+                            <a href="notifications.php" class="nav-link">
+                                <i class="nav-icon fas fa-bell"></i>
+                                <p>Notifications</p>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -193,7 +193,7 @@ if ($filter !== 'all') {
                                         <i class="fas fa-user-graduate text-primary me-2"></i>&nbsp;<?= htmlspecialchars($row['student_name']) ?>
                                     </h5>
                                         <p class="mb-2"><strong>Scholarship:</strong> <?= htmlspecialchars($row['scholarship_title']) ?></p>
-                                        <p class="mb-0"><strong>Status:</strong> 
+                                        <p class="mb-2"><strong>Status:</strong> 
                                         <span class="badge bg-<?php 
                                             echo ($row['application_status'] === 'approved') ? 'success' : 
                                                 (($row['application_status'] === 'pending') ? 'warning' : 'danger'); 

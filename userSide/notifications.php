@@ -30,6 +30,13 @@ if ($user_id) {
     $stmt->execute();
     $notifications = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 }
+// Count approved applications for notification
+$notif_stmt = $conn->prepare("SELECT COUNT(*) AS notif_count FROM applications WHERE user_id = ? AND status = 'approved'");
+$notif_stmt->bind_param("i", $user_id);
+$notif_stmt->execute();
+$notif_result = $notif_stmt->get_result();
+$notif_row = $notif_result->fetch_assoc();
+$notif_count = $notif_row['notif_count'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -100,12 +107,23 @@ if ($user_id) {
             </li>
         </ul>
         <div class="nav-side">
-            <div class="noti">
+            <div class="noti dropdown">
                 <a class="nav-link" data-toggle="dropdown" href="#">
                     <i class="far fa-bell"></i>
+                    <?php if ($notif_count > 0): ?>
+                    <span class="badge badge-danger navbar-badge"><?php echo $notif_count; ?></span>
+                    <?php endif; ?>
                 </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <?php if ($notif_count > 0): ?>
+                    <a href="notifications.php" class="dropdown-item">
+                        <i class="fas fa-check-circle mr-2 text-success"></i> You have <?php echo $notif_count; ?> approved application<?php echo $notif_count > 1 ? 's' : ''; ?>
+                    </a>
+                    <?php else: ?>
+                    <span class="dropdown-item text-muted">No new notifications</span>
+                    <?php endif; ?>
+                </div>
             </div>
-
             <div class="prof-img">
                 <a href="profile.php">
                     <img src="../uploads/<?php echo htmlspecialchars($picture); ?>" alt="profile image">
@@ -152,6 +170,10 @@ if ($user_id) {
             </div>
         </div>
     </div>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap Bundle (includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <!-- SweetAlert2 JS -->
     <script src="../assets/sweetalert2/sweetalert2.all.min.js"></script>
     <!-- AdminLTE Scripts -->    
