@@ -28,15 +28,17 @@ if (isset($_GET['id']) && isset($_GET['update'])) {
     $stmt->close();
 }
 
+
 // Fetch application details
 $application = null;
 if (isset($_GET['id'])) {
     $application_id = $_GET['id'];
 
-    $query = "SELECT a.*, u.name, u.gender 
-              FROM applications a
-              LEFT JOIN users u ON a.user_id = u.id
-              WHERE a.id = ?";
+    $query = "SELECT a.*, u.name, u.gender, u.email 
+        FROM applications a
+        LEFT JOIN users u ON a.user_id = u.id
+        WHERE a.id = ?";
+
     $stmt = $conn->prepare($query);
     $stmt->bind_param("i", $application_id);
     $stmt->execute();
@@ -142,13 +144,10 @@ if (isset($_GET['id'])) {
                                         </button>
                                     </form>
 
-                                    <form action="controls/update-status.php" method="POST">
-                                        <input type="hidden" name="id" value="<?= $application['id'] ?>">
-                                        <input type="hidden" name="status" value="rejected">
-                                        <button type="submit" class="btn btn-danger">
-                                            <i class="fas fa-times me-2"></i> Reject
-                                        </button>
-                                    </form>
+                                    <!-- Trigger Rejection Modal -->
+                                    <button class="btn btn-danger" data-toggle="modal" data-target="#rejectModal">
+                                        <i class="fas fa-times me-2"></i> Reject
+                                    </button>
                                 </div>
                             <?php endif; ?>
                         </div>
@@ -159,14 +158,44 @@ if (isset($_GET['id'])) {
             </div>
         </div>
     </div>
+
+    <!-- Rejection Modal -->
+    <div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="rejectModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form action="controls/send-rejection.php" method="POST">
+                <input type="hidden" name="application_id" value="<?= $application['id'] ?>">
+                <input type="hidden" name="user_email" value="<?= htmlspecialchars($application['email']) ?>">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="rejectModalLabel">Reject Application</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="reason">Rejection Reason</label>
+                        <textarea name="reason" id="reason" class="form-control" rows="4" required placeholder="Explain the reason for rejection..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Send Rejection</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+
+    
     <!-- Bootstrap 5 -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- SweetAlert2 JS -->
     <script src="../assets/sweetalert2/sweetalert2.all.min.js"></script>
     <!-- AdminLTE Scripts -->    
+    <script src="../assets/AdminLTE/plugins/jquery/jquery.min.js"></script>
     <script src="../assets/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>    
-    <script src="../assets/AdminLTE/plugins/bootstrap/bootstrap.min.js"></script>
-    <script src="../assets/AdminLTE/plugins/jquery/jquery.min.js"></script>    
+    <script src="../assets/AdminLTE/plugins/bootstrap/bootstrap.min.js"></script>  
     <script src="../assets/AdminLTE/dist/js/adminlte.min.js"></script>
 </body>
 </html>

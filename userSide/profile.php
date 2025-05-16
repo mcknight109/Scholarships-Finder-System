@@ -58,8 +58,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $stmt->close();
 }
-// Count approved applications for notification
-$notif_stmt = $conn->prepare("SELECT COUNT(*) AS notif_count FROM applications WHERE user_id = ? AND status = 'approved'");
+// Count all relevant notifications (approved, rejected, or pending/reviewed older than 10 days)
+$notif_stmt = $conn->prepare("
+    SELECT COUNT(*) AS notif_count 
+    FROM applications 
+    WHERE user_id = ? 
+    AND (
+        status = 'approved' 
+        OR status = 'rejected' 
+        OR (status IN ('pending', 'reviewed') AND applied_at <= NOW() - INTERVAL 10 DAY)
+    )
+");
 $notif_stmt->bind_param("i", $user_id);
 $notif_stmt->execute();
 $notif_result = $notif_stmt->get_result();

@@ -16,22 +16,32 @@ if ($user_id) {
     }
 }
 
-// Fetch approved applications
 $notifications = [];
+
 if ($user_id) {
     $stmt = $conn->prepare("
-        SELECT s.title, a.applied_at
+        SELECT s.title, a.status, a.applied_at
         FROM applications a
         JOIN scholarships s ON a.scholarship_id = s.id
-        WHERE a.user_id = ? AND a.status = 'approved'
+        WHERE a.user_id = ?
         ORDER BY a.applied_at DESC
     ");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
     $notifications = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 }
-// Count approved applications for notification
-$notif_stmt = $conn->prepare("SELECT COUNT(*) AS notif_count FROM applications WHERE user_id = ? AND status = 'approved'");
+
+// Count all relevant notifications
+$notif_stmt = $conn->prepare("
+    SELECT COUNT(*) AS notif_count 
+    FROM applications 
+    WHERE user_id = ? 
+    AND (
+        status = 'approved' 
+        OR status = 'rejected' 
+        OR (status IN ('pending', 'reviewed') AND applied_at <= NOW() - INTERVAL 10 DAY)
+    )
+");
 $notif_stmt->bind_param("i", $user_id);
 $notif_stmt->execute();
 $notif_result = $notif_stmt->get_result();
@@ -146,21 +156,43 @@ $notif_count = $notif_row['notif_count'];
             <div class="notiContent p-3">
                 <div class="container-fluid">
                     <?php if (!empty($notifications)): ?>
-                    <?php foreach ($notifications as $notif): ?>
-                        <div class="alert alert-success alert-dismissible fade show">
-                        <div class="d-flex align-items-center">
-                            <img src="../uploads/<?php echo htmlspecialchars($picture); ?>" class="img-circle elevation-2 mr-3" alt="User Image" width="40" height="40">
-                            <div>
-                            <strong>Application Approved!</strong><br>
-                            Your application for <strong><?php echo htmlspecialchars($notif['title']); ?></strong> was approved on 
-                            <?php echo date("F j, Y", strtotime($notif['applied_at'])); ?>.
+                        <?php foreach ($notifications as $notif): ?>
+                            <?php
+                                $title = htmlspecialchars($notif['title']);
+                                $status = $notif['status'];
+                                $date = date("F j, Y", strtotime($notif['applied_at']));
+                                $alertClass = "alert-info";
+                                $icon = "fas fa-info-circle";
+                                $message = "";
+
+                                if ($status === 'approved') {
+                                    $alertClass = "alert-success";
+                                    $icon = "fas fa-check-circle";
+                                    $message = "Your application for <strong>$title</strong> was <strong>approved</strong> on $date.";
+                                } elseif ($status === 'rejected') {
+                                    $alertClass = "alert-danger";
+                                    $icon = "fas fa-times-circle";
+                                    $message = "Unfortunately, your application for <strong>$title</strong> was <strong>rejected</strong> on $date.";
+                                } elseif (in_array($status, ['pending', 'reviewed']) && strtotime($notif['applied_at']) <= strtotime("-10 days")) {
+                                    $alertClass = "alert-warning";
+                                    $icon = "fas fa-hourglass-half";
+                                    $message = "Your application for <strong>$title</strong> has not been reviewed in over 10 days (applied on $date). Please contact the admin.";
+                                } else {
+                                    continue; // Skip notifications not matching the logic
+                                }
+                            ?>
+                            <div class="alert <?php echo $alertClass; ?> alert-dismissible fade show">
+                                <div class="d-flex align-items-center">
+                                    <img src="../uploads/<?php echo htmlspecialchars($picture); ?>" class="img-circle elevation-2 mr-3" alt="User Image" width="40" height="40">
+                                    <div>
+                                        <i class="<?php echo $icon; ?> mr-1"></i> <?php echo $message; ?>
+                                    </div>
+                                </div>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                             </div>
-                        </div>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        </div>
-                    <?php endforeach; ?>
+                        <?php endforeach; ?>
                     <?php else: ?>
                     <div class="alert alert-info">
                         <i class="fas fa-info-circle"></i> No new notifications yet.
